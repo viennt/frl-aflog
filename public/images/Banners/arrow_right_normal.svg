@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="80" height="80" viewBox="0 0 80 80">
+  <defs>
+    <filter id="_" x="22" y="13" width="40" height="54" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Ellipse_210" x="0" y="0" width="80" height="80" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-2"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_953" data-name="Group 953" transform="translate(312 822)" opacity="0.25">
+    <g transform="matrix(1, 0, 0, 1, -312, -822)" filter="url(#_)">
+      <text id="_2" data-name="" transform="translate(42 49)" fill="#fff" font-size="24" font-family="FontAwesome5Free-Solid, 'Font Awesome 5 Free'"><tspan x="-4.5" y="0"></tspan></text>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, -312, -822)" filter="url(#Ellipse_210)">
+      <g id="Ellipse_210-2" data-name="Ellipse 210" transform="translate(15 15)" fill="none" stroke="#fff" stroke-width="1">
+        <circle cx="25" cy="25" r="25" stroke="none"/>
+        <circle cx="25" cy="25" r="24.5" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>
