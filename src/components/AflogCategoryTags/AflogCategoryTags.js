@@ -12,14 +12,14 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     padding: '20px 0'
   },
-  divider:{
-    marginTop: 1
+  divider: {
+    marginTop : 60
   },
   tags: {
     fontSize: 14,
     fontWeight: 'bold',
     lineHeight: '24px',
-    cursor:'pointer',
+    cursor: 'pointer',
     display: 'inline-flex',
     alignItems: 'center',
     color: theme.palette.text.light,
@@ -42,22 +42,32 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const AflogCategoryTags = ({ selected, set, get, getAll, page }) => {
+const AflogCategoryTags = ({ 
+  selected, 
+  setCat, 
+  setPage, 
+  get, 
+  getAll, 
+  page, 
+  path,
+  clear }) => {
   const classes = useStyles();
 
   return (
     <Fragment>
-      <Divider  className={classes.divider}/>
+      {path === '/Home' ? null : <Divider className={classes.divider} />}
       <div className={classes.root}>
         <Typography
           component="p"
           className={clsx({
             [classes.tags]: true,
-            [classes.active]: selected === '0'
+            [classes.active]: selected === 0
           })}
           onClick={() => {
-            set('0');
-            getAll(page)
+            setCat(0);
+            setPage(1);
+            clear();
+            // getAll(page)
           }}
         >
           All
@@ -67,11 +77,13 @@ const AflogCategoryTags = ({ selected, set, get, getAll, page }) => {
           component="p"
           className={clsx({
             [classes.tags]: true,
-            [classes.active]: selected == '6'
+            [classes.active]: selected == 6
           })}
           onClick={() => {
-            set('6')
-            get(page, '6')
+            setCat(6);
+            setPage(1); 
+            clear();
+            // get(page, 6);
           }}
         >
           Food
@@ -81,11 +93,13 @@ const AflogCategoryTags = ({ selected, set, get, getAll, page }) => {
           component="p"
           className={clsx({
             [classes.tags]: true,
-            [classes.active]: selected == '4'
+            [classes.active]: selected == 4
           })}
           onClick={() => {
-            set('4')
-            get(page, '4')
+            setCat(4);
+            setPage(1);
+            clear(); 
+            // get(page, 4)
           }}
         >
           Fashion
@@ -95,11 +109,13 @@ const AflogCategoryTags = ({ selected, set, get, getAll, page }) => {
           component="p"
           className={clsx({
             [classes.tags]: true,
-            [classes.active]: selected == '1'
+            [classes.active]: selected == 1
           })}
           onClick={() => {
-            set('1')
-            get(page, '1')
+            setCat(1);
+            setPage(1); 
+            clear();
+            // get(page, 1)
           }}
         >
           Travel
@@ -109,11 +125,13 @@ const AflogCategoryTags = ({ selected, set, get, getAll, page }) => {
           component="p"
           className={clsx({
             [classes.tags]: true,
-            [classes.active]: selected == '5'
+            [classes.active]: selected == 5
           })}
           onClick={() => {
-            set('5')
-            get(page, '5')
+            setCat(5);
+            setPage(1); 
+            clear();
+            // get(page, 5)
           }}
         >
           Books
@@ -123,11 +141,13 @@ const AflogCategoryTags = ({ selected, set, get, getAll, page }) => {
           component="p"
           className={clsx({
             [classes.tags]: true,
-            [classes.active]: selected == '3'
+            [classes.active]: selected == 3
           })}
           onClick={() => {
-            set('3')
-            get(page, '3')
+            setCat(3);
+            setPage(1); 
+            clear();
+            // get(page, 3)
           }}
         >
           Wacky

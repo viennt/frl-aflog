@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 
 import {
@@ -22,7 +22,17 @@ const Carousel = ({
   slides
 }) => {
   const classes = useStyles();
+  // useEffect(() => {
+  //   let count = 0;
+  //   let timer1 = setTimeout(() => {
+  //     count++;
+      
+  //   }, 1000);
+  //   count === 3 ? count = 0 : goToSlide(count);
+  // })
+
   const [activeIndex, setActiveIndex] = useState(0);
+  const [sliderIndex, setSliderIndex] = useState(0);
 
   const goToSlide = (index) => {
     setActiveIndex(index);
@@ -43,17 +53,35 @@ const Carousel = ({
   }
 
   const goToNextSlide = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     let index = activeIndex;
+   
     let slidesLength = slides.length - 1;
 
     if (index === slidesLength) {
       index = -1;
     }
     ++index;
+    
     setActiveIndex(index);
+    setSliderIndex(prevState => prevState + 1);
+    console.log(sliderIndex);
+    
   }
+  
+  const startCarousel = () => {
+    setInterval(() => {
+      goToNextSlide();
+    }, 4000);
+
+};
+
+  // useEffect(() => {
+  //   //  window.scrollTo({ top: 0, behavior: "smooth" });
+  //   startCarousel();
+  // }, [sliderIndex])
+
 
   return (
     <div className="carousel-container">
@@ -89,11 +117,11 @@ const Carousel = ({
                 )}
               </ul>
               <p className="carousel-slide__title">
-                Over{' '}
+                Discover the{' '}
                 <span className="carousel-slide__primary">
-                  100+ brands
+                  crème de la crème
                 </span>{' '}
-                for you to instantly shop from.
+                of Content Creators.
               </p>
               <p className="carousel-slide__content">
                 Browse through a catalogue of curated experiences from the finest content creators around you.
@@ -123,11 +151,11 @@ const Carousel = ({
                 )}
               </ul>
               <p className="carousel-slide__title">
-                Discover the{' '}
+                A{' '}
                 <span className="carousel-slide__primary">
-                  crème de la crème
+                  curated feed
                 </span>{' '}
-                of Content Creators.
+                to suit your personal aesthetic.
               </p>
               <p className="carousel-slide__content">
                 Browse through a catalogue of curated experiences from the finest content creators around you.
@@ -157,15 +185,16 @@ const Carousel = ({
                 )}
               </ul>
               <p className="carousel-slide__title">
-                A{' '}
+                Over{' '}
                 <span className="carousel-slide__primary">
-                  curated feed
+                  100+ brands
                 </span>{' '}
-                to suit your personal aesthetic.
+                for you to instantly shop from.
               </p>
               <p className="carousel-slide__content">
                 Browse through a catalogue of curated experiences from the finest content creators around you.
               </p>
+              
             </div>
             <div className="carousel__slide_item carousel__slide_item_img">
               <img src={"/images/Banners/banner3.png"} alt={"/images/Banners/banner3.png"} />

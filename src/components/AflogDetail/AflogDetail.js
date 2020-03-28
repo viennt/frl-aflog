@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link, Redirect } from 'react-router-dom'
 import Card from '@material-ui/core/Card';
 import {
   Avatar,
@@ -15,12 +16,28 @@ import Typography from '@material-ui/core/Typography';
 import { categories } from '../../utils';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    '& .MuiCardMedia-root': {
-      height: '300px'
+  '@global': {
+    '*::-webkit-scrollbar': {
+      width: "7px",
     },
-    '& .MuiCardContent-root': {
+    '*::-webkit-scrollbar-track': {
+      background: "#f1f1f1"
+    },
+    '*::-webkit-scrollbar-thumb': {
+      background: "#555"
     }
+  },
+  root: {
+    '& .MuiCard-root': {
+      borderRadius: 20
+    }
+  },
+  media: {
+    width: '100%',
+    borderRadius: 20
+  },
+  icon: {
+    width: '30px !important'
   },
   cardBody: {
     paddingLeft: theme.spacing(1),
@@ -58,7 +75,7 @@ const useStyles = makeStyles(theme => ({
     lineHeight: '20px'
   },
   group: {
-    paddingRight: 5,
+    marginRight: 20,
     display: 'flex',
     alignItems: 'center'
   },
@@ -78,7 +95,7 @@ const useStyles = makeStyles(theme => ({
     lineHeight: '30px',
   },
   desc: {
-    color: theme.palette.text.light,
+    color: theme.palette.text.dark,
     fontWeight: 'bold',
     fontSize: '16px',
     letterSpacing: 'normal',
@@ -114,8 +131,11 @@ const useStyles = makeStyles(theme => ({
   },
   buy: {
     background: theme.palette.primary.dark
+  },
+  tooltip: {
+    backgroundColor: '#fff',
+    color: '#000'
   }
-
 }));
 
 export default function AflogDetail({
@@ -130,37 +150,52 @@ export default function AflogDetail({
     content,
     view_count,
     user,
-    tags
+    tags,
+    product
   },
 }) {
   const classes = useStyles();
   let itemSrc = category.length > 0 &&
     categories.filter(item => (item.name === category[0].name))
+
+
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
-        <CardMedia
+        {/* <CardMedia
           className={classes.media}
           image={image}
           title="Contemplative Reptile"
-        />
+        /> */}
+        <img src={image} alt={image} className={classes.media} />
         <CardContent>
           <div className={classes.cardBody}>
-            <Avatar
-              src={user.image}
-              alt={user.image}
-              aria-describedby={id}
-              type="button"
-              className={classes.avatar}
-            />
+            {
+              user.image ?
+                <Avatar
+                  src={user.image}
+                  alt={user.image}
+                  aria-describedby={id}
+                  type="button"
+                  className={classes.avatar}
+                /> :
+                <Avatar
+                  src={"/images/About Us/user-placeholder2.svg"}
+                  alt={"avatar"}
+                  aria-describedby={id}
+                  type="button"
+                  className={classes.avatar}
+                />
+            }
+
             <div className="pl3">
               <Typography component='p' className={clsx(classes.alignX, classes.username)}>
                 {user.name}
               </Typography>
               {/* todo username is missing */}
-              <Typography component='p' className={clsx(classes.alignX, classes.name)}>
+              {/* <Typography component='p' className={clsx(classes.alignX, classes.name)}>
                 {user.email}
-              </Typography>
+              </Typography> */}
             </div>
             <div className={classes.grow} />
             <div className={classes.flex}>
@@ -184,12 +219,17 @@ export default function AflogDetail({
             {title}
           </Typography>
           <Typography component="h4" className={classes.desc}>
-            <img src={itemSrc && itemSrc[0].iconPurple} alt={itemSrc} /> &nbsp;
+            <img
+              src={itemSrc && itemSrc[0].iconPurple}
+              alt={itemSrc}
+              className={classes.icon} /> &nbsp;
             {description}
           </Typography>
-          <Typography component="p" className={classes.content}>
+
+          <Typography component="p" className={classes.content} >
             {content}
           </Typography>
+
           <div className={classes.tags}>
             {
               tags ?
@@ -201,11 +241,17 @@ export default function AflogDetail({
                 : null
             }
             <div className={classes.grow} />
-            <Tooltip title="Buy Now" placement="top">
-              <Avatar className={clsx(classes.buy)}>
-                <img src={'/images/Gridcard Dialog/buy_now_button.svg'} alt="buy now" />
-              </Avatar>
-            </Tooltip>
+            <Typography
+              component="a"
+              href={product.link}
+              target="_blank"
+            >
+              <Tooltip title="Buy Now" placement="top" className={classes.tooltip}>
+                <Avatar className={clsx(classes.buy)} >
+                  <img src={'/images/Gridcard Dialog/buy_now_button.svg'} alt="buy now" />
+                </Avatar>
+              </Tooltip>
+            </Typography>
           </div>
         </CardContent>
       </Card>

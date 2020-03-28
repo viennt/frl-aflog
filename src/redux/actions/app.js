@@ -1,4 +1,4 @@
-import { SET_APP_STATUS } from './index';
+import { SET_APP_STATUS, SET_LIGHT_BOX } from './index';
 
 export const apiLoading = () => ({
   type: SET_APP_STATUS,
@@ -21,4 +21,9 @@ export const apiError = () => ({
     apiLoading: false,
     apiError: true
   }
+});
+
+export const setLightBox = (payload) => ({
+  type: SET_LIGHT_BOX,
+  payload,
 });

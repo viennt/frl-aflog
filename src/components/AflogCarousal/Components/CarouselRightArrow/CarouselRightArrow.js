@@ -3,7 +3,10 @@ import { makeStyles } from '@material-ui/styles';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 const useStyles = makeStyles(theme => ({
-
+  arrow:{
+    color : '#fff',
+    fontSize: '2rem'
+  }
 }));
 
 
@@ -16,8 +19,9 @@ const CarouselRightArrow = ({ onClick }) => {
       className="carousel__arrow carousel__arrow--right"
       onClick={onClick}
     >
-      <img src={'/images/Banners/arrow_right_normal.svg'} alt="left" />
-      {/* <ArrowRightIcon /> */}
+      {/* <i class="fas fa-caret-circle-right"></i> */}
+      {/* <img src={'/images/Banners/arrow_right_normal.svg'} alt="left" /> */}
+      <ArrowRightIcon className={classes.arrow}/>
     </a>
   );
 };

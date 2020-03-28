@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/styles';
+import validate from 'validate.js';
 import {
   Typography,
   Grid,
@@ -11,6 +13,31 @@ import {
 import Avatar from '@material-ui/core/Avatar';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import clsx from 'clsx';
+import { emailContact } from "../../../../redux/actions/aflog";
+import { setAlert } from "../../../../redux/actions/alert";
+
+const schema = {
+  name: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 32
+    }
+  },
+  email: {
+    presence: { allowEmpty: true, message: 'is required' },
+    email: true,
+    length: {
+      maximum: 64
+    }
+  },
+  message: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 200
+    }
+  },
+
+};
 
 const useStyles = makeStyles(theme => ({
   roots: {
@@ -80,18 +107,73 @@ const useStyles = makeStyles(theme => ({
     boxShadow: '0px 0px 8px -3px #000',
     marginRight: '20px'
   },
-  mobile:{
-    [theme.breakpoints.down('xs')]:{
-      marginTop : 70
+  mobile: {
+    [theme.breakpoints.down('xs')]: {
+      marginTop: 70
     }
   }
 }));
 
-const ContactInfo = () => {
+const ContactInfo = ({
+  setAlert
+}) => {
   const classes = useStyles();
+
   const [formState, setFormState] = useState({
-    values: {}
+    isValid: false,
+    values: {},
+    touched: {},
+    errors: {}
   });
+
+  useEffect(() => {
+    const errors = validate(formState.values, schema);
+
+    setFormState(formState => ({
+      ...formState,
+      isValid: errors ? false : true,
+      errors: errors || {}
+    }));
+  }, [formState.values]);
+
+  const handleChange = event => {
+    event.persist();
+
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        [event.target.name]: event.target.value
+      },
+      touched: {
+        ...formState.touched,
+        [event.target.name]: true
+      }
+    }));
+  };
+
+  const sendFeedback = (templateId, variables)=> {
+    window.emailjs.send(
+      'gmail',  //service ID
+      templateId,
+      variables,
+    ).then(res => {
+      setAlert('We have received your email', 'success');
+    }).catch(err => setAlert('Oops, something went wrong', 'danger'))
+  }
+  const handleSubmit = e => {
+    e.preventDefault();
+    const templateId = 'template_XfuM3x0K';
+    sendFeedback(templateId, {
+        message_html: formState.values.message,
+        from_name: formState.values.name,
+        to_email: formState.values.email
+      })
+  }
+
+  const hasError = field =>
+    formState.touched[field] && formState.errors[field] ? true : false;
+
 
   return (
     <div className={classes.roots}>
@@ -144,13 +226,13 @@ const ContactInfo = () => {
 
               <div className={classes.flex}>
                 <Avatar className={clsx(classes.small, classes.social)}>
-                  <i class="fab fa-facebook-f fb "></i>
+                  <i className="fab fa-facebook-f fb "></i>
                 </Avatar>
                 <Avatar className={clsx(classes.small, classes.social)}>
-                  <i class="fab fa-instagram insta"></i>
+                  <i className="fab fa-instagram insta"></i>
                 </Avatar>
                 <Avatar className={clsx(classes.small, classes.social)}>
-                  <i class="fab fa-linkedin-in linkedIn"></i>
+                  <i className="fab fa-linkedin-in linkedIn"></i>
                 </Avatar>
               </div>
             </div>
@@ -170,41 +252,64 @@ const ContactInfo = () => {
             </Typography>
               <form
                 className={classes.form}
-                onSubmit={""}
+                onSubmit={handleSubmit}
               >
                 <TextField
                   className={classes.textField}
+                  error={hasError('name')}
+                  helperText={
+                    hasError('name') ? formState.errors.name[0] : null
+                  }
+                  onChange={handleChange}
                   label="Name"
                   name="name"
-                  value={formState.values.name}
+                  value={formState.values.name || ''}
                 />
                 <TextField
                   className={classes.textField}
                   label="Email"
                   name="email"
-                  defaultValue="rohitshroff@aol.com"
-                  value={formState.values.email}
+                  error={hasError('email')}
+                  helperText={
+                    hasError('email') ? formState.errors.email[0] : null
+                  }
+                  onChange={handleChange}
+                  value={formState.values.email || ''}
                 />
                 <TextField
                   id="textarea"
                   label="Message"
+                  name="message"
+                  error={hasError('message')}
+                  helperText={
+                    hasError('message') ? formState.errors.message[0] : null
+                  }
+                  onChange={handleChange}
+                  value={formState.values.message || ''}
                   rows="3"
                   multiline
                 />
                 <div className="mb3" />
                 <Button
                   className={classes.button}
+                  disabled={!formState.isValid}
                   type="submit"
+                  variant="contained"
+
                 >
                   Submit
               </Button>
+
               </form>
             </div>
           </Grid>
         </Grid>
-      </Grid>      
+      </Grid>
     </div>
   )
 };
 
-export default ContactInfo;
+export default connect(
+  null,
+  { setAlert }
+)(ContactInfo);

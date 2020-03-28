@@ -32,9 +32,11 @@ const useStyles = makeStyles(theme => ({
     textDecoration : 'none',
     color: theme.palette.white,
     padding : '0 15px',
-    fontSize : '13px'
+    fontSize : '13px',
+    fontFamily: "Muli, sans-serif"
   },
   mobilelink:{
+    fontFamily: "Muli, sans-serif",
     textDecoration : 'none',
     color: theme.palette.black,
     padding : '0 15px',
@@ -57,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 const Topbar = ({location})=> {
   const classes = useStyles();
 
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);  
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleMobileMenuClose = () => {
@@ -94,13 +96,13 @@ const Topbar = ({location})=> {
         </RouterLink>
       </MenuItem>
       <MenuItem>
-        <RouterLink to="/Contact" className={classes.mobilelink}>
+        <RouterLink to="/Contact" className={classes.mobilelink} >
           Community
         </RouterLink>
       </MenuItem>
     </Menu>
   );
-    
+
   return (
     <div className={classes.aflog_navbar}>
       <AppBar position="static" className={classes.appbar_custom}>
@@ -108,7 +110,7 @@ const Topbar = ({location})=> {
           <RouterLink to="/Home" className={classes.logo}>
             <img
               alt="Logo"
-              src="/images/Header/aflog_logo_white.svg"              
+              src="/images/Header/aflog_logo_white.svg"
             />
           </RouterLink>
           <div className={classes.actions}>
@@ -117,6 +119,11 @@ const Topbar = ({location})=> {
               className={classes.app_store}
               color="inherit"
               aria-label="app store button"
+              onClick = {
+                () => {
+                  window.open('https://play.google.com/store/apps/details?id=in.aflog.app', '_blank');
+                }
+              }
             >
               <img src="/images/Header/play_store_banner.svg" alt="" />
             </IconButton>
@@ -125,6 +132,11 @@ const Topbar = ({location})=> {
               className={classes.google_play}
               color="inherit"
               aria-label="Google play button"
+              onClick = {
+                () => {
+                  window.open('https://apps.apple.com/in/app/aflog/id1452031355', '_blank');
+                }
+              }
             >
               <img src="/images/Header/app_store_banner.svg" alt="" />
             </IconButton>
@@ -140,7 +152,11 @@ const Topbar = ({location})=> {
             <RouterLink to="/Contact" className={classes.link}>
               Contact
             </RouterLink>
-            <RouterLink to="/Community" className={classes.link}>
+            <RouterLink className={classes.link} onClick = {
+              () => {
+                window.open('https://forms.gle/H4GKcg6No9NDouSN6', '_blank');
+              }
+            }>
               Community
             </RouterLink>
           </div>

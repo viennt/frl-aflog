@@ -10,14 +10,11 @@ const useStyles = makeStyles(theme => ({
 const Contact = ({
 }) => {
   const classes = useStyles();
-
   return (
-    
-    <div>     
+    <div>
       <ContactInfo/>
       <ContactLocation/>
     </div>
-    
   );
 };
 

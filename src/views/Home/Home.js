@@ -1,129 +1,157 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { connect } from "react-redux";
-import { CircularProgress, Typography, Grid, Button } from '@material-ui/core';
+import { CircularProgress, Typography, Grid, Button, Modal } from '@material-ui/core';
 import { AflogCategoryTags } from '../../components';
 import { AflogCard } from '../../components';
-import { getAllAflogs, setCategory, getAflogsByCategory } from "../../redux/actions/aflog";
-import { AflogCarousal, AflogModal, AflogCardSwap } from '../../components';
-
+import { getAllAflogs, setCategory, getAflogsByCategory, clearAflog } from "../../redux/actions/aflog";
+import { AflogCarousal, AflogCardSwap, AflogModal } from '../../components';
+import Masonry from 'react-masonry-component';
 import { carouselSlidesData } from '../../utils/';
+import debounce from "lodash.debounce";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    position: 'relative'
+    position: 'relative',
   },
   flexMasonry: {
-    display: 'flex',
-    padding: '24px',
-    boxOrient: 'vertical',
-    boxDirection: 'normal',
-    flexDirection: 'column',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    maxHeight: 2500,
     background: theme.palette.background.light,
-    // width: '100vw',
-    overflowX: 'scroll',
-    boxSizing: 'border-box',
-    justifyContent: 'space-evenly',
+    minHeight : 400
   },
-  masnoryItem: {
-    width: 'auto',
-    color: 'white',
+  button: {
+    ...theme.typography.button,
+    textTransform: 'uppercase',
+    width: 200,
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  title: {
+    margin: '0 auto'
+  },
+  paper: {
+    position: 'absolute',
+    // width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  loader:{
+    textAlign :'center'
   }
 }));
 
 const Home = ({
+  location,
+  error,
+  hasMore,
   apiLoading,
   Aflogs,
   getAllAflogs: getAllAflogsDispatcher,
-  getAflogsByCategory: getAflogsByCategoryDispatcher
+  getAflogsByCategory: getAflogsByCategoryDispatcher,
+  clearAflog: clearAflogDispatcher
 }) => {
 
   const classes = useStyles();
 
-  const [category, setCategory] = useState('0');
-  const [page, setPage] = useState(2);
-  const [open, setOpen] = React.useState(false);
-  const [selected, setselected] = React.useState(null);
+  const [category, setCategory] = useState(0);
+  const [page, setPage] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (e) => {
+    e.stopPropagation();
+    setOpen(false);
+  };
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    getAllAflogsDispatcher(page);
-  }, [page])
+    // window.scrollTo({ top: 0, behavior: "smooth" });
+    category === 0 ? getAllAflogsDispatcher(page) :
+      getAflogsByCategoryDispatcher(page, category);
+
+  }, [page, category]);
+
+  window.onscroll = debounce(() => {
+    if (error || apiLoading || !hasMore) return;
+
+    // Checks that the page has scrolled to the bottom
+    if (
+      window.innerHeight + document.documentElement.scrollTop
+      >= 0.9*document.documentElement.offsetHeight
+    ) {
+      setPage(page + 1);
+    }
+  }, 100);
 
   return (
-    <div className={classes.root}>
-      <AflogCarousal slides={carouselSlidesData} />
-      <AflogCardSwap
-        setOpen={setOpen}
-        open={open}
-        Aflogs={Aflogs}
-        index={selected}
-        loading = {apiLoading}
-      />
-      <div className={classes.grow} />
 
+    <div className={classes.root}>
+      <AflogModal
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        open={open}
+      >
+        <AflogCardSwap slides={Aflogs} selected={selectedIndex}/>
+      </AflogModal>
+      <AflogCarousal slides={carouselSlidesData} />
       <AflogCategoryTags
-        set={setCategory}
+        setCat={setCategory}
+        setPage={setPage}
         selected={category}
         get={getAflogsByCategoryDispatcher}
         getAll={getAllAflogsDispatcher}
+        page={page}
+        path={location.pathname}
+        clear={clearAflogDispatcher}
       />
-      <Grid
-        container
-      >
-        <Grid
-          item
-          xs={12}
+      {
+        <Masonry
+          className={classes.flexMasonry}
+          elementType={'div'}
         >
           {
-            apiLoading ?
-              <div className={classes.root}>
-                <CircularProgress />
-              </div> :
-              Aflogs !== null ?
-                <div className={classes.flexMasonry}>
-                  {
-                    Aflogs.length > 0 ?
-                      Aflogs.map((item, index) => (
-                        <div
-                          key={index}
-                          className={classes.masnoryItem}
-                          onClick={() => {
-                            setOpen(true);
-                            setselected(index)
-                          }}
-                        >
-                          <AflogCard aflog={item} />
-                        </div>
-                      )) :
-                      <Fragment>
-                        <Typography
-                          className={classes.title}
-                          gutterBottom
-                          variant="h4"
-                        >
-                          No results found
-          				      </Typography>
-                      </Fragment>
-                  }
-                </div> :
-                null
+            Aflogs.map((item, index) => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                xl={2}
+                key={index}
+                onClick={() => {
+                  setSelectedIndex(index);
+
+                }}
+              >
+                <AflogCard aflog={item} handleOpen={handleOpen} handleClose={handleClose}/>
+              </Grid>
+            ))
           }
-        </Grid>
-      </Grid>
+        </Masonry>
+      }
+      {apiLoading &&
+        <div className={classes.loader}><CircularProgress /></div>
+      }
+      {!hasMore &&
+        <div>You did it! You reached the end!</div>
+      }
     </div>
   );
 };
 
 const mapStateToProps = state => ({
+  error: state.aflogState.error,
+  hasMore: state.aflogState.hasMore,
   apiLoading: state.appState.apiLoading,
   Aflogs: state.aflogState.Aflogs,
 });
 
 export default connect(
   mapStateToProps,
-  { getAllAflogs, setCategory, getAflogsByCategory }
+  { getAllAflogs, getAflogsByCategory, clearAflog }
 )(Home);

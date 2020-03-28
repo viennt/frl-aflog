@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: 30,
     background: theme.palette.primary.main,
     textAlign: 'center',
-    padding : '30px'
+    padding : '30px',
   },
 }));
 
@@ -43,7 +43,7 @@ const AboutUs = ({
             sm={8}
             md={6}
           >
-            <img src={'/images/About us/aflog_icon_purple.svg'} className={classes.logo} />
+            <img src={'/images/aflog_icon_purple.svg'} className={classes.logo} />
             <Typography variant={"h2"}>
               We f*cking love {' '} <strike>good</strike>
               <span className={classes.primaryText}> great{' '}</span>
@@ -68,14 +68,15 @@ const AboutUs = ({
             sm={8}
           >
             <Typography variant='body1'>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel diam libero. Nullam laoreet sem nec commodo lacinia. Ut lacinia sodales consectetur. Nunc sit amet elit eget nibh semper pulvinar at non augue. Nullam turpis elit, rhoncus in bibendum eu, tempus in ante.
-              In rutrum vel mauris at hendrerit. Ut ultrices ex nibh, sed cursus augue fermentum nec.consectetur adipiscing elit. Praesent vel diam libero. Nullam laoreet sem nec commodo lacinia. Ut lacinia sodales consectetur. Nunc sit amet elit eget nibh semper pulvinar at non augue. Nullam turpis elit, rhoncus in bibendum eu, tempus in ante.
-              In rutrum vel mauris at hendrerit. augue fermentum nec.
+            We’re a content based agency tech company. But that’s oversimplified.
           </Typography>
             <br />
+              <Typography variant='body1'>
+              We, at Aflog, believe that experiences sell more than ads. When done right, influencers and content creators can both benefit greatly from User-Generated content. Influencer marketing, while popular, is misunderstood and isn’t being utilised to its fullest potential. We come to work everyday because we want to solve a problem- help brands use their own consumers to market their products. We’re obsessively passionate about it and we’re making it happen.
+            </Typography>
+              <br />
             <Typography variant='body1'>
-              Maecenas a aliquet leo, nec feugiat lacus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis vitae eleifend eros. Nulla pharetra ipsum sit amet nunc ultrices, vestibulum mattis urna blandit. Praesent malesuada turpis ut justo commodo, sit amet dignissim sapien euismod.
-              Praesent lorem quam, tristique feugiat lacus et, elementum mattis turpis.
+              We started off as a group of young people frustrated with the ineffective ads thrown at us all day everyday. 2 years and a lot of ups and downs later, we’re here, building seamless tech to help you create content for the brands you know and love. What are you waiting for? Join our community.
           </Typography>
           </Grid>
         </Grid>
@@ -90,8 +91,8 @@ const AboutUs = ({
             sm={6}
           >
             <Typography variant="h4">
-              So we created aflog to be the go-to resource for discovering the best
-              content creators and to connect and collaborate with.
+              We created Aflog to be the go-to resource for discovering the best
+              content creators to connect and collaborate with.
             </Typography>
           </Grid>
         </Grid>

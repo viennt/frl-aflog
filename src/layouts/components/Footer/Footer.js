@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   social_buttons: {
     marginRight: 30
   },
-  copyright: { 
+  copyright: {
     color : theme.palette.text.light,
     fontSize: 12,
     lineHeight: '15px',
@@ -68,23 +68,33 @@ const Footer = props => {
       className={clsx(classes.root, className)}
     >
       <div className={classes.social_buttons}>
-        <IconButton edge="start" className={classes.socialIconButton} color="inherit" aria-label="menu">
+        <IconButton edge="start" className={classes.socialIconButton} color="inherit" aria-label="menu" onClick = {
+          () => {
+            window.open('https://www.facebook.com/Afl0g/', '_blank');
+          }
+        }>
           <i className="fab fa-facebook-f"></i>
         </IconButton>
-        <IconButton edge="start" className={classes.socialIconButton} color="inherit" aria-label="menu">
+        <IconButton edge="start" className={classes.socialIconButton} color="inherit" aria-label="menu" onClick = {
+          () => {
+            window.open('https://www.instagram.com/aflog.in/', '_blank');
+          }
+        }>
           <i className="fab fa-instagram"></i>
         </IconButton>
-        <IconButton edge="start" className={classes.socialIconButton} color="inherit" aria-label="menu">
+        <IconButton edge="start" className={classes.socialIconButton} color="inherit" aria-label="menu" onClick = {
+          () => {
+            window.open('https://www.linkedin.com/company/aflogindia/?originalSubdomain=in', '_blank');
+          }
+        }>
           <i className="fab fa-linkedin-in"></i>
         </IconButton>
-        <IconButton edge="start" className={classes.socialIconButton} color="inherit" aria-label="menu">
-          <i className="fab fa-pinterest"></i>
-        </IconButton>
-        <IconButton edge="start" className={classes.socialIconButton} color="inherit" aria-label="menu">
+        <IconButton edge="start" className={classes.socialIconButton} color="inherit" aria-label="menu" onClick = {
+          () => {
+            window.open('https://twitter.com/aflog_in', '_blank');
+          }
+        }>
           <i className="fab fa-twitter"></i>
-        </IconButton>
-        <IconButton edge="start" className={classes.socialIconButton} color="inherit" aria-label="menu">
-          <i className="fab fa-youtube"></i>
         </IconButton>
       </div>
       <div>
@@ -106,13 +116,18 @@ const Footer = props => {
         </Typography>
       </div>
       <div className={classes.grow} />
-          
+
       <div className={classes.actions}>
         <IconButton
           edge="start"
           className={classes.app_store}
           color="inherit"
           aria-label="app store button"
+          onClick = {
+            () => {
+              window.open('https://play.google.com/store/apps/details?id=in.aflog.app', '_blank');
+            }
+          }
         >
           <img src="/images/Header/play_store_banner.svg" alt="" />
         </IconButton>
@@ -121,6 +136,11 @@ const Footer = props => {
           className={classes.google_play}
           color="inherit"
           aria-label="Google play button"
+          onClick = {
+            () => {
+              window.open('https://apps.apple.com/in/app/aflog/id1452031355', '_blank');
+            }
+          }
         >
           <img src="/images/Header/app_store_banner.svg" alt="" />
         </IconButton>

@@ -7,10 +7,20 @@ import overrides from './overrides';
 const theme = createMuiTheme({
   palette,
   typography,
-  overrides,
+  // overrides,
   zIndex: {
     appBar: 1200,
     drawer: 1100
+  },
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: "12px",
+        color: "#000",
+        backgroundColor: "#fff",
+        boxShadow:' 1px 1px 8px 2px #ccc'
+      }
+    }
   }
 });
 

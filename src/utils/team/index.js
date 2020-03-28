@@ -1,6 +1,6 @@
 export default [
     {
-        name : "chubbs",
+        name : "Chubbs",
         designition: "CMO (Chief Meowing Officer)",
         image:"/images/About Us/Team Normal/Chubbs.png",
         imgage_hover:"/images/About Us/Team Hover/Chubbs.png"
@@ -10,93 +10,93 @@ export default [
         designition: "FOUNDER & CEO",
         image: "/images/About Us/Team Normal/Shroff.png",
         imgage_hover: "/images/About Us/Team Hover/Shroff.png"
-    },        
+    },
     {
         name: "Samarth Chattoo",
         designition: "CO-FOUNDER",
-        image: "",
-        imgage_hover: ""
+        image: "/images/About Us/user-placeholder2.svg",
+        imgage_hover: "/images/About Us/user-placeholder2.svg"
     },
     {
         name: "Frank Istacky",
-        designition: "CONTENT STRATEGIST",
+        designition: "DIRECTOR - MARKETING & GROWTH",
         image: "/images/About Us/Team Normal/Frank.png",
         imgage_hover: "/images/About Us/Team Hover/Frank.png"
     },
     {
         name: "Arvind Vasudevan",
-        designition: "BRANDS HEAD",
+        designition: "DIRECTOR - HR & COMMUNITY",
         image: "/images/About Us/Team Normal/Arvind.png",
         imgage_hover: "/images/About Us/Team Hover/Arvind.png"
     },
     {
         name: "Sanya Menon",
-        designition: "BRAND MANAGER",
+        designition: "HEAD OF STRATEGIC PARTNERSHIPS",
         image: "/images/About Us/Team Normal/Sanya.png",
         imgage_hover: "/images/About Us/Team Hover/Sanya.png"
     },
     {
         name: "Varun Lakshman",
-        designition: "PRODUCT HEAD",
-        image: "/images/About Us/Team Normal/varun.png",
-        imgage_hover: "/images/About Us/Team Hover/varun.png"
+        designition: "HEAD OF PRODUCT - AFTOOL",
+        image: "/images/About Us/Team Normal/Varun.png",
+        imgage_hover: "/images/About Us/Team Hover/Varun.png"
     },
     {
         name: "Swasthika Srinivasan",
-        designition: "UI / UX DESIGNER",
+        designition: "HEAD OF PRODUCT - AFLOG",
         image: "/images/About Us/Team Normal/Swasthika.png",
         imgage_hover: "/images/About Us/Team Hover/Swasthika.png"
     },
     {
         name: "Aaqif Hydroos",
-        designition: "BRAND MANAGER",
+        designition: "HEAD OF OPERATIONS",
         image:"/images/About Us/Team Normal/Aaqif.png",
         imgage_hover:"/images/About Us/Team Hover/Aaqif.png"
     },
     {
         name: "Meghna Dixit",
-        designition: "SOCIAL MEDIA MANAGER",
+        designition: "SOCIAL MEDIA SPECIALIST",
         image: "/images/About Us/Team Normal/Meghna.png",
         imgage_hover: "/images/About Us/Team Hover/Meghna.png"
     },
     {
         name: "Arjun Preetham",
-        designition: "TECH LEAD",
+        designition: "HEAD OF TECH",
         image:"/images/About Us/Team Normal/Arjun.png",
         imgage_hover:"/images/About Us/Team Hover/Arjun.png"
     },
-    
+
     {
         name: "Janelle Alva",
-        designition: "SOCIAL MEDIA MANAGER",
+        designition: "SOCIAL MEDIA SPECIALIST",
         image:"/images/About Us/Team Normal/Janelle.png",
         imgage_hover:"/images/About Us/Team Hover/Janelle.png"
     },
     {
-        name: "Likith S",
-        designition: "GRAPHIC DESIGNER",
-        image: "",
-        imgage_hover: ""
+        name: "Likhith S",
+        designition: "GRAPHIC DESIGN SPECIALIST",
+        image: "/images/About Us/user-placeholder2.svg",
+        imgage_hover: "/images/About Us/user-placeholder2.svg"
     },
     {
-        name: "Siva Sanjeet",
-        designition: "UX DESIGNER",
-        image: "",
-        imgage_hover: ""
+        name: "Nikhil M Prasad",
+        designition: "UI/UX DESIGNER",
+        image: "/images/About Us/user-placeholder2.svg",
+        imgage_hover: "/images/About Us/user-placeholder2.svg"
     },
     {
         name: "Shrunga C G",
-        designition: "HR & ACCOUNTANT",
-        image: "",
-        imgage_hover: ""
+        designition: "ACCOUNTS",
+        image: "/images/About Us/user-placeholder2.svg",
+        imgage_hover: "/images/About Us/user-placeholder2.svg"
     },
     {
         name: "Sreekar Prasad",
-        designition: "E-COMMERCE MANAGER",
-        image: "",
-        imgage_hover: ""
+        designition: "E-COMMERCE SPECIALIST",
+        image: "/images/About Us/user-placeholder2.svg",
+        imgage_hover: "/images/About Us/user-placeholder2.svg"
     },
-    
-    
-    
+
+
+
 ]

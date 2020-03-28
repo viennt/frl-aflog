@@ -1,8 +1,7 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+body , html {
+	background: #fff !important;
+	margin:0;
+	font-family: "Muli, sans-serif" !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
@@ -12,11 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-.AutoRotatingCarousel-carouselWrapper-94{
-  height : 625px;
+.AutoRotatingCarousel-content-91{
+  height: calc(100%) !important;
+  max-width: 600px !important;
+  transform: translateY(-48%) !important;
+}
+.AutoRotatingCarousel-footer-101{
+	display : none;
 }
 .icons{
-  margin: 3px 20px 0 0 
+  margin: 3px 20px 0 0
 }
 .fb{
   cursor: pointer;
@@ -56,7 +60,7 @@ code {
   margin-top: 1.5rem !important;
 }
 .mt5{
-  margin-top: 3rem !important;
+  margin-top: 1rem !important;
 }
 
 .mb1{
@@ -170,6 +174,3 @@ code {
 .pr5{
   padding-right: 3rem !important;
 }
-
-
-

@@ -1,53 +1,94 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import {
-  Typography,
-  Divider,
-  CircularProgress
-} from '@material-ui/core';
-import { Slide } from 'material-auto-rotating-carousel';
-import { AutoRotatingCarousel } from 'material-auto-rotating-carousel';
 import { AflogDetail } from '../index';
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+
 const useStyles = makeStyles(theme => ({
   root: {
   },
-  button: {
-    display: 'none'
-  },
-  modal: {
-    background: 'grey',
-    '& .MuiBackdrop-root': {
-    }
+  arrow: {
+    color: '#fff',
+    fontSize: '2rem'
   }
 }));
 
-const AflogCardSwap = ({ setOpen, open, Aflogs, index, loading }) => {
+const AflogCardSwap = ({ slides, selected }) => {
   const classes = useStyles();
-  console.log(Aflogs === []);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  useEffect(() => {
+    setActiveIndex(selected);
+  }, []);
+
+  const goToSlide = (index) => {
+    setActiveIndex(index);
+  }
+
+  const goToPrevSlide = (e) => {
+    e.preventDefault();
+
+    let index = activeIndex;
+    let slidesLength = slides.length;
+
+    if (index < 1) {
+      index = slidesLength;
+    }
+
+    --index;
+    setActiveIndex(index);
+  }
+
+  const goToNextSlide = (e) => {
+    // e.preventDefault();
+
+    let index = activeIndex;
+
+    let slidesLength = slides.length - 1;
+
+    if (index === slidesLength) {
+      index = -1;
+    }
+    ++index;
+
+    setActiveIndex(index);
+
+  }
   return (
     <div className={classes.root}>
-      {
-        Aflogs === [] && Aflogs.length === 0 ?
-          null :
-          <AutoRotatingCarousel
-            label='Get started'
-            open={open}
-            ButtonProps={{ className: classes.button }}
-            onClose={() => setOpen(false)}
-            onStart={() => setOpen(false)}
-            style={{ position: 'absolute' }}
-            containerStyle={{ background: 'green' }}
-            ModalProps={{ className: classes.modal }}
-            autoplay={false}
-            landscape={true}
-          >
-            {
-              Aflogs.map((item, index) => (
+      <a
+        href="#"
+        className="carousel__arrow carousel__arrow--left"
+        onClick={e => goToPrevSlide(e)} 
+      >
+        <ArrowLeftIcon />
+      </a>
+
+      <ul className="carousel__slides">
+        {
+          slides.length > 0 && slides.map((item, index) => (
+            <li
+              className={
+                index == activeIndex
+                  ? "carousel__slide carousel__slide--active"
+                  : "carousel__slide"
+              }
+            >
+              <div className="carousel__slide_item">
                 <AflogDetail aflog={item} />
-              ))
-            }
-          </AutoRotatingCarousel>
-      }
+                {/* <img src={item.image} /> */}
+              </div>
+            </li>
+          ))}
+      </ul>
+
+      <a
+        href="#"
+        className="carousel__arrow carousel__arrow--right"
+        onClick={e => goToNextSlide(e)}
+      >
+        <ArrowRightIcon className={classes.arrow} />
+      </a>
     </div>
   );
 };

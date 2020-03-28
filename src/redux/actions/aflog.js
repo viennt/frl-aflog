@@ -5,17 +5,23 @@ import { apiLoading, apiSuccess, apiError } from "./app";
 import {
   SET_CATEGORY,
   GET_ALL_AFLOGS,
-  GET_AFLOGS_BY_CATEGORY
+  GET_AFLOGS_BY_CATEGORY,
+  CLEAR_AFLOGS
 } from './index';
 
 // import data from '../../categories/dummyall';
 
-const rootURl = 'http://157.245.106.33/api/v1/web/aflogs';
+const rootURl = 'https://devaf.in/api/v1/web/aflogs';
 
 export const setCategory = (cat) => {
   return {
     type: SET_CATEGORY,
     payload: cat
+  }
+}
+export const clearAflog = () => {
+  return {
+    type: CLEAR_AFLOGS,
   }
 }
 
@@ -44,7 +50,7 @@ export const getAflogsByCategory = (page_count , categoryId) => async dispatch =
   try {
     dispatch(apiLoading());
     const res = await
-      axios.get(`${rootURl}/category?id=${categoryId}?page=${page_count}`);
+      axios.get(`${rootURl}/category?id=${categoryId}&page=${page_count}`);
 
     if (res.data) {
       dispatch({
@@ -53,6 +59,19 @@ export const getAflogsByCategory = (page_count , categoryId) => async dispatch =
       });
       dispatch(apiSuccess());
     }
+
+  } catch (err) {
+    dispatch(setAlert(err.message, 'danger'));
+    dispatch(apiError());
+  }
+}
+
+export const emailContact = (data) => async dispatch => {
+  try {
+    dispatch(apiLoading());
+    const res = await axios.post(`${rootURl}?message=${data}`);
+    if (res) {
+      dispatch(apiSuccess());}
 
   } catch (err) {
     dispatch(setAlert(err.message, 'danger'));

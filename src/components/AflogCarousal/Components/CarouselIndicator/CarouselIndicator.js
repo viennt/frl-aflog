@@ -1,14 +1,12 @@
-import React from 'react';
+import React , {useEffect} from 'react';
 import { makeStyles } from '@material-ui/styles';
 
-const useStyles = makeStyles(theme => ({
-  
+const useStyles = makeStyles(theme => ({  
 }));
 
 
 const CarouselIndicator = ({ onClick ,index, activeIndex}) => {
   const classes = useStyles();
-  
   return (
     <li>
       <a

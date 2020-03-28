@@ -87,6 +87,7 @@ const Team = ({
 					<Grid
 						item
 						xs={12}
+						lg={10}
 						container
 						justify={'center'}
 					>
@@ -128,13 +129,7 @@ const Team = ({
 			</div>
 			<div className={classes.vision}>
 				<div className={classes.overlay}>
-					<Typography variant={"h2"} className={clsx(classes.title, 'mt3 mb3')}>
-						And Our {' '} <span className={classes.primaryText}> Vision </span>{' '}?
-					</Typography>
-					<Typography variant={"body1"} className={classes.subTitle}>
-						Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-						Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-          </Typography>
+				
 				</div>
 			</div>
 		</div>

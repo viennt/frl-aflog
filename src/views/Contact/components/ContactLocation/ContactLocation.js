@@ -21,6 +21,8 @@ const ContactLocation = (props) => {
         initialCenter={{
           lat: 12.912610, lng: 77.588470
         }}
+        gestureHandling='none'
+        
       >
         <Marker
           onClick={onMarkerClick}

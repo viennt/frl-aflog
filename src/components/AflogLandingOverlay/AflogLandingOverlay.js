@@ -8,13 +8,13 @@ const useStyles = makeStyles(theme => ({
   aflog_overlay_root: {
     boxSizing: 'border-box',
     width: '100%',
-    height: '90vh',
+    height: '100vh',
     position: 'absolute',
     top: '-65px',
     left: 0,
     right: 0,
     background: 'rgba(250, 250, 250, 0.98)',
-    zIndex: 3000,
+    zIndex: 1000,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
@@ -72,11 +72,11 @@ function AflogLandingOverlay({ history, className }) {
           From handpicked recommendations, we focus on
           bringing together a community of diverse niches.
         </Typography>
-        <img src={'/images/Landing Page/app_store_banner.svg'} alt={'app_store_banner.svg'} />
+        <a href="https://apps.apple.com/in/app/aflog/id1452031355" target="about:blank"><img src={'/images/Landing Page/app_store_banner.svg'} alt={'app_store_banner.svg'} /></a>
         <br />
-        <img src={'/images/Landing Page/play_store_banner.svg'} alt={'play_store_banner.svg'} />
+        <a href="https://play.google.com/store/apps/details?id=in.aflog.app" target="about:blank"><img src={'/images/Landing Page/play_store_banner.svg'} alt={'play_store_banner.svg'} /></a>
         <br />
-        <Button onClick={renderHomePage} className={classes.button}> 
+        <Button onClick={renderHomePage} className={classes.button}>
           <i className="fas fa-desktop"></i> &nbsp;
           CONTINUE TO WEBSITE
         </Button>

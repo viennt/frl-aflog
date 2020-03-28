@@ -13,13 +13,22 @@
       href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto+Slab|Roboto:300,400,500,700"
       rel="stylesheet"
     />
+    <script src="https://smtpjs.com/v3/smtp.js">
+    </script>
     <link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Muli:200,200i,300,400,500,600,700,800&display=swap&subset=latin-ext"
       rel="stylesheet">
-    <title>React Material Dashboard</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.4.1/dist/email.min.js">
+    </script>
+    <title>Aflog</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init("user_Ff4SJV58lyfeW0eehGwsQ"); // Obtain your user ID at the dashboard https://dashboard.emailjs.com/integration
+      })();
+    </script>
   </body>
 </html>

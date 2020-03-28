@@ -108,8 +108,7 @@ const Services = ({
                 md={5}
               >
                 <img
-                  src={'/images/About us/aflogArt.svg'}
-                  alt="aflog art"
+                  src={'/images/aflogArt.svg'}
                   className={clsx(classes.serviceImg, classes.mt3_xs)}
                 />
               </Grid>
@@ -164,7 +163,7 @@ const Services = ({
               sm={12}
               md={5}
             >
-              <img src={'/images/About us/joinUs.svg'} alt="aflog art" className={clsx(classes.serviceImg)} />
+              <img src={'/images/joinUs.svg'} className={clsx(classes.serviceImg)} />
             </Grid>
             <Grid
               item
@@ -176,11 +175,11 @@ const Services = ({
                   Over a <span className={classes.primaryText}>million</span> words shared.
                 What will <span className={classes.primaryText}>you</span> write about?
                 </Typography>
-                <Typography variant={"body2"} className="mt4">
-                  We have a dream to build a seamless eco-system for content creators
-                  to share, collaborate, grow and get noticed by top brands.
-                </Typography>
-                <Button className={classes.button}>
+                <Button className={classes.button} onClick = {
+                  () => {
+                    window.open('https://forms.gle/H4GKcg6No9NDouSN6', '_blank');
+                  }
+                }>
                   Join Now
                 </Button>
               </div>

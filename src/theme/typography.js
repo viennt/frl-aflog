@@ -1,7 +1,7 @@
 import palette from './palette';
 
 export default {
-  fontFamily: "Muli, sans-serif",
+  fontFamily: "Muli, sans-serif !important" ,
   fontSize: 14,
   fontWeight: 'normal',
   fontStretch: 'normal',

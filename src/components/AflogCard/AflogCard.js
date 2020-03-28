@@ -1,4 +1,6 @@
 import React from 'react';
+
+import { Link ,Redirect} from 'react-router-dom'
 import { makeStyles } from '@material-ui/styles';
 import {
   Typography,
@@ -15,8 +17,9 @@ import {categories} from '../../utils';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '300px',
-    marginBottom: '20px'
+    color: theme.palette.text.contrastText,
+    margin :10,
+    marginBottom : 25
   },
   cardHead: {
     width: '100%',
@@ -48,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    width: '100%',
+    
     transition: 'opacity 0.5s ease-in-out',
     '&:hover': {
       opacity: 1,
@@ -80,12 +83,15 @@ const useStyles = makeStyles(theme => ({
   },
   tags: {
     fontSize : 12,
+    fontWeight: 'bold',
     border: '1px solid white',
     background: 'rgba(255, 255, 255, 0.3)',
     padding: '2px 4px',
     borderRadius: 6,
     width: 55,
-    zIndex: 5,
+    zIndex: 3000,
+    textDecoration : 'none',
+    color : theme.palette.text.contrastText,
     transition: 'background 0.2s ease-in-out',
     '&:hover': {
       background: 'rgba(255, 255, 255, 0.6)',
@@ -127,6 +133,10 @@ const useStyles = makeStyles(theme => ({
     letterSpacing: 'normal',
     lineHeight: '14px',
     marginLeft: 2
+  },
+  buynow:{
+    color:'white',
+    textDecorationLine:'none'
   }
 }));
 
@@ -138,8 +148,11 @@ const AflogCard = ({ aflog: {
   category,
   likes_count,
   share_count,
-  user
-}
+  user,
+  product
+},
+handleOpen,
+handleClose
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -151,14 +164,14 @@ const AflogCard = ({ aflog: {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popper' : undefined;
 
-  let itemSrc = category.length > 0 &&
+  let itemSrc = category && category.length > 0 &&
     categories.filter(item => (item.name === category[0].name))
   return (
-    <div className={classes.root}>
-      <div className={classes.cardHead}>
+    <div className={classes.root} >
+      <div className={classes.cardHead} onClick={handleOpen}>
         <img src={image} alt={image} className={classes.cardImage} />
-        <div className={classes.mask}>
-          <div className={classes.actions}>
+        <div className={classes.mask} >
+          <div className={classes.actions} >
             {/* <Typography variant="subtitle2" component="span" className={classes.tags}>
               <StarRateIcon className={classes.icon} />
               {' '}Star
@@ -167,10 +180,12 @@ const AflogCard = ({ aflog: {
               <BookmarkIcon className={classes.icon} />
               {' '}Save
           </Typography> */}
-            <Typography variant="subtitle2" component="span" className={classes.tags}>
-              <LocalMallIcon className={classes.icon} />
-              &nbsp;Buy
-            </Typography>
+            {/* <a href={product.link} target="_blank"> */}
+            <Typography variant="subtitle2" component="a" className={classes.tags} href={product && product.link} target="_blank" onClick={handleClose}>
+                <LocalMallIcon className={classes.icon} />
+                &nbsp;Buy
+              </Typography>
+            {/* </a> */}
             {/* <Typography variant="subtitle2" component="span" className={classes.tags}>
               <ShareIcon className={classes.icon} />
               {' '}Share
@@ -186,6 +201,8 @@ const AflogCard = ({ aflog: {
         </div>
       </div>
       <div className={classes.cardBody}>
+        {
+          user && user.image ?
         <Avatar
           src={user.image}
           alt={user.image}
@@ -193,9 +210,18 @@ const AflogCard = ({ aflog: {
           aria-describedby={id}
           type="button"
           onClick={handleClick}
-        /> &nbsp;
+        /> : 
+        <Avatar
+          src={"/images/About Us/user-placeholder2.svg"}
+          alt={"avatar"}
+          className={classes.small}
+          aria-describedby={id}
+          type="button"
+          onClick={handleClick}
+        /> 
+        } &nbsp;
         <Typography component='p' className={clsx(classes.alignX, classes.username)}>
-          {user.name}
+          {user && user.name}
         </Typography>
         <div className={classes.grow} />
         <div className={classes.flex}>
@@ -209,23 +235,6 @@ const AflogCard = ({ aflog: {
           </div>
         </div>
       </div>
-      <Popper id={id} open={open} anchorEl={anchorEl} placement={'bottom-start'}>
-        <div className={classes.paper}>
-          <div className={classes.popper_head}>
-            <Avatar
-              src={user.image}
-              alt={user.image}
-              className={classes.large}
-            />
-          </div>
-          <div className={classes.popper_body}>
-            <Typography component='p' className={clsx(classes.alignX , classes.username)}>
-              {user.name} &nbsp; <img src={itemSrc && itemSrc[0].iconPurple} alt={itemSrc} />
-            </Typography>
-          </div>
-
-        </div>
-      </Popper>
     </div>
   );
 };

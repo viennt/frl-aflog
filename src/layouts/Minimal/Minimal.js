@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 import { withRouter } from 'react-router-dom';
 import { Topbar } from '../components';
 import { Footer } from '../components';
+import { Alert } from '../../components';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -18,11 +19,14 @@ const Minimal = props => {
   const { children } = props;
   const { location } = props;
   const classes = useStyles();
-  
+
   return (
     <div className={classes.root}>
       <Topbar />
-      <main className={classes.content}>{children}</main>
+      <main className={classes.content}>
+        <Alert />
+        {children}
+      </main>
       {location.pathname === '/Contact' ? null : <Footer />}
     </div>
   );

@@ -1,32 +1,36 @@
-import React from 'react';
+import React, { Children } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import AflogDetail from '../AflogDetail';
+
 const useStyles = makeStyles(theme => ({
   modal: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    overflow:'scroll',
-    
+    overflow: 'scroll',
+    '& .MuiBackdrop-root':{
+      backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    }
   },
   paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    backgroundColor: 'transparent',
+    overflowY : 'scroll',
+    width: '800px',
+    height: '90vh'
   },
- 
+
 }));
 
 export default function AflogModal({
-    open,
-    handleClose,
-    aflog}) {
+  open,
+  handleClose,
+  handleOpen,
+  children
+}) {
   const classes = useStyles();
-  
+
 
   return (
     <div>
@@ -44,8 +48,7 @@ export default function AflogModal({
       >
         <Fade in={open}>
           <div className={classes.paper}>
-          
-            <AflogDetail aflog={aflog}/>
+            {children}
           </div>
         </Fade>
       </Modal>
