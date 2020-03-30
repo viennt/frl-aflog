@@ -14,6 +14,7 @@ import {
 } from '../../components';
 import { carouselSlidesData } from '../../utils/'
 import debounce from "lodash.debounce";
+import BackToTopButton from '../components/BackToTopButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -95,6 +96,7 @@ const Landing = ({
   return (
 
     <div className={classes.root}>
+      <BackToTopButton />
       <AflogModal
         handleOpen={handleOpen}
         handleClose={handleClose}
