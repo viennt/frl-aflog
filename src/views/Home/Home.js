@@ -1,14 +1,14 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { CircularProgress, Typography, Grid, Button, Modal } from '@material-ui/core';
 import { AflogCategoryTags } from '../../components';
 import { AflogCard } from '../../components';
-import { getAllAflogs, setCategory, getAflogsByCategory, clearAflog } from "../../redux/actions/aflog";
+import { getAllAflogs, setCategory, getAflogsByCategory, clearAflog } from '../../redux/actions/aflog';
 import { AflogCarousal, AflogCardSwap, AflogModal } from '../../components';
-import Masonry from 'react-masonry-component';
+import Masonry from 'react-masonry-css';
 import { carouselSlidesData } from '../../utils/';
-import debounce from "lodash.debounce";
+import debounce from 'lodash.debounce';
 import BackToTopButton from '../components/BackToTopButton';
 
 const useStyles = makeStyles(theme => ({
@@ -16,8 +16,15 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
   },
   flexMasonry: {
+    display: '-webkit-box',
+    display: '-ms-flexbox',
+    display: 'flex',
+    width: 'auto',
     background: theme.palette.background.light,
     minHeight : 400
+  },
+  flexMasonryColumn: {
+    backgroundClip: 'padding-box'
   },
   button: {
     ...theme.typography.button,
@@ -93,44 +100,51 @@ const Home = ({
     <div className={classes.root}>
       <BackToTopButton />
       <AflogModal
-        handleOpen={handleOpen}
         handleClose={handleClose}
+        handleOpen={handleOpen}
         open={open}
       >
-        <AflogCardSwap slides={Aflogs} selected={selectedIndex}/>
+        <AflogCardSwap
+          selected={selectedIndex}
+          slides={Aflogs}
+        />
       </AflogModal>
       <AflogCarousal slides={carouselSlidesData} />
       <AflogCategoryTags
-        setCat={setCategory}
-        setPage={setPage}
-        selected={category}
+        clear={clearAflogDispatcher}
         get={getAflogsByCategoryDispatcher}
         getAll={getAllAflogsDispatcher}
         page={page}
         path={location.pathname}
-        clear={clearAflogDispatcher}
+        selected={category}
+        setCat={setCategory}
+        setPage={setPage}
       />
       {
         <Masonry
+          breakpointCols={{
+            default: 4,
+            1100: 3,
+            700: 2,
+            500: 1
+          }}
           className={classes.flexMasonry}
-          elementType={'div'}
+          columnClassName={classes.flexMasonryColumn}
         >
           {
             Aflogs.map((item, index) => (
               <Grid
                 item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                xl={2}
                 key={index}
                 onClick={() => {
                   setSelectedIndex(index);
-
                 }}
               >
-                <AflogCard aflog={item} handleOpen={handleOpen} handleClose={handleClose}/>
+                <AflogCard
+                  aflog={item}
+                  handleClose={handleClose}
+                  handleOpen={handleOpen}
+                />
               </Grid>
             ))
           }
