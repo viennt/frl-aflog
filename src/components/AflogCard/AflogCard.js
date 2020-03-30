@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
   },
   cardBody: {
+    marginTop: theme.spacing(1),
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     display: 'flex',
@@ -51,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    
+
     transition: 'opacity 0.5s ease-in-out',
     '&:hover': {
       opacity: 1,
@@ -160,7 +161,7 @@ handleClose
   const handleClick = event => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
-  
+
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popper' : undefined;
 
@@ -168,8 +169,15 @@ handleClose
     categories.filter(item => (item.name === category[0].name))
   return (
     <div className={classes.root} >
-      <div className={classes.cardHead} onClick={handleOpen}>
-        <img src={image} alt={image} className={classes.cardImage} />
+      <div
+        className={classes.cardHead}
+        onClick={handleOpen}
+      >
+        <img
+          alt={image}
+          className={classes.cardImage}
+          src={image}
+        />
         <div className={classes.mask} >
           <div className={classes.actions} >
             {/* <Typography variant="subtitle2" component="span" className={classes.tags}>
@@ -181,10 +189,17 @@ handleClose
               {' '}Save
           </Typography> */}
             {/* <a href={product.link} target="_blank"> */}
-            <Typography variant="subtitle2" component="a" className={classes.tags} href={product && product.link} target="_blank" onClick={handleClose}>
-                <LocalMallIcon className={classes.icon} />
+            <Typography
+              className={classes.tags}
+              component="a"
+              href={product && product.link}
+              onClick={handleClose}
+              target="_blank"
+              variant="subtitle2"
+            >
+              <LocalMallIcon className={classes.icon} />
                 &nbsp;Buy
-              </Typography>
+            </Typography>
             {/* </a> */}
             {/* <Typography variant="subtitle2" component="span" className={classes.tags}>
               <ShareIcon className={classes.icon} />
@@ -194,8 +209,14 @@ handleClose
           <Typography variant="subtitle1">
             {title}
           </Typography>
-          <Typography variant="subtitle2" className="title">
-            <img src={itemSrc && itemSrc[0].iconWhite} alt={itemSrc} /> &nbsp;
+          <Typography
+            className="title"
+            variant="subtitle2"
+          >
+            <img
+              alt={itemSrc}
+              src={itemSrc && itemSrc[0].iconWhite}
+            /> &nbsp;
             {description}
           </Typography>
         </div>
@@ -203,35 +224,50 @@ handleClose
       <div className={classes.cardBody}>
         {
           user && user.image ?
-        <Avatar
-          src={user.image}
-          alt={user.image}
-          className={classes.small}
-          aria-describedby={id}
-          type="button"
-          onClick={handleClick}
-        /> : 
-        <Avatar
-          src={"/images/About Us/user-placeholder2.svg"}
-          alt={"avatar"}
-          className={classes.small}
-          aria-describedby={id}
-          type="button"
-          onClick={handleClick}
-        /> 
+            <Avatar
+              alt={user.image}
+              aria-describedby={id}
+              className={classes.small}
+              onClick={handleClick}
+              src={user.image}
+              type="button"
+            /> :
+            <Avatar
+              alt={'avatar'}
+              aria-describedby={id}
+              className={classes.small}
+              onClick={handleClick}
+              src={'/images/About Us/user-placeholder2.svg'}
+              type="button"
+            />
         } &nbsp;
-        <Typography component='p' className={clsx(classes.alignX, classes.username)}>
+        <Typography
+          className={clsx(classes.alignX, classes.username)}
+          component="p"
+        >
           {user && user.name}
         </Typography>
         <div className={classes.grow} />
         <div className={classes.flex}>
           <div className={classes.group}>
-            <img src={'/images/Grid Item/star_icon.svg'} alt="stars" />
-            <Typography component="span" className={classes.lable}>{likes_count}</Typography>
+            <img
+              alt="stars"
+              src={'/images/Grid Item/star_icon.svg'}
+            />
+            <Typography
+              className={classes.lable}
+              component="span"
+            >{likes_count}</Typography>
           </div>
           <div className={classes.group}>
-            <img src={'/images/Grid Item/shopping_bag_purple.svg'} alt="shares" />
-            <Typography component="span" className={classes.lable}>{share_count}</Typography>
+            <img
+              alt="shares"
+              src={'/images/Grid Item/shopping_bag_purple.svg'}
+            />
+            <Typography
+              className={classes.lable}
+              component="span"
+            >{share_count}</Typography>
           </div>
         </div>
       </div>
