@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-
+import BackToTopButton from '../components/BackToTopButton';
 import { AboutUs, Services, Team } from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -14,6 +14,7 @@ const About = ({
 
   return (
     <div className={classes.aboutus_root} >
+      <BackToTopButton />
       <AboutUs />
       <Services />
       <Team />

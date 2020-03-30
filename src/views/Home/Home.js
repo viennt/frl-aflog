@@ -9,6 +9,7 @@ import { AflogCarousal, AflogCardSwap, AflogModal } from '../../components';
 import Masonry from 'react-masonry-component';
 import { carouselSlidesData } from '../../utils/';
 import debounce from "lodash.debounce";
+import BackToTopButton from '../components/BackToTopButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -90,6 +91,7 @@ const Home = ({
   return (
 
     <div className={classes.root}>
+      <BackToTopButton />
       <AflogModal
         handleOpen={handleOpen}
         handleClose={handleClose}

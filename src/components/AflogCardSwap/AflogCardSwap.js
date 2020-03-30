@@ -40,19 +40,19 @@ const AflogCardSwap = ({ slides, selected }) => {
   }
 
   const goToNextSlide = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
 
     let index = activeIndex;
 
     let slidesLength = slides.length - 1;
 
     if (index === slidesLength) {
-      index = -1;
+      index = 0;
+    } else {
+      ++index;
     }
-    ++index;
 
     setActiveIndex(index);
-
   }
   return (
     <div className={classes.root}>
