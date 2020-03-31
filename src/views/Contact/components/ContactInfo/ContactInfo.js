@@ -247,7 +247,7 @@ const ContactInfo = ({
                   </Avatar>
                 </a>
                 <a
-                  href="https://twitter.com/aflog_in"
+                  href="https://www.linkedin.com/company/aflogindia/"
                   style={{color: '#bdbdbd'}}
                   target="_blank"
                 >
@@ -256,12 +256,12 @@ const ContactInfo = ({
                   </Avatar>
                 </a>
                 <a
-                  href="https://www.instagram.com/aflog.in/"
+                  href="https://twitter.com/aflog_in"
                   style={{color: '#bdbdbd'}}
                   target="_blank"
                 >
                   <Avatar className={clsx(classes.small, classes.social)}>
-                    <i className="fab fa-instagram insta" />
+                    <i className="fab fa-twitter twitter" />
                   </Avatar>
                 </a>
               </div>

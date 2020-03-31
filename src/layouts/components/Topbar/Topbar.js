@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   aflog_navbar: {
@@ -33,10 +33,14 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.white,
     padding : '0 15px',
     fontSize : '13px',
-    fontFamily: "Muli, sans-serif"
+    fontFamily: 'Muli, sans-serif'
+  },
+  linkActive:{
+    fontWeight: '900',
+    color: '#5B63F8',
   },
   mobilelink:{
-    fontFamily: "Muli, sans-serif",
+    fontFamily: 'Muli, sans-serif',
     textDecoration : 'none',
     color: theme.palette.black,
     padding : '0 15px',
@@ -76,27 +80,43 @@ const Topbar = ({location})=> {
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
+      open={isMobileMenuOpen}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
       <MenuItem>
-        <RouterLink to="/Home" className={classes.mobilelink}>
+        <RouterLink
+          className={classes.mobilelink}
+          to="/Home"
+        >
           Home
         </RouterLink>
       </MenuItem>
       <MenuItem>
-        <RouterLink to="/About-us" className={classes.mobilelink}>
+        <RouterLink
+          className={classes.mobilelink}
+          to="/About-us"
+        >
           About
         </RouterLink>
       </MenuItem>
       <MenuItem>
-        <RouterLink to="/Contact" className={classes.mobilelink}>
+        <RouterLink
+          className={classes.mobilelink}
+          to="/Contact"
+        >
           Contact
         </RouterLink>
       </MenuItem>
       <MenuItem>
-        <RouterLink to="/Contact" className={classes.mobilelink} >
+        <RouterLink
+          className={classes.mobilelink}
+          onClick = {
+            () => {
+              window.open('https://forms.gle/H4GKcg6No9NDouSN6', '_blank');
+            }
+          }
+        >
           Community
         </RouterLink>
       </MenuItem>
@@ -105,9 +125,15 @@ const Topbar = ({location})=> {
 
   return (
     <div className={classes.aflog_navbar}>
-      <AppBar position="static" className={classes.appbar_custom}>
+      <AppBar
+        className={classes.appbar_custom}
+        position="static"
+      >
         <Toolbar>
-          <RouterLink to="/Home" className={classes.logo}>
+          <RouterLink
+            className={classes.logo}
+            to="/Home"
+          >
             <img
               alt="Logo"
               src="/images/Header/aflog_logo_white.svg"
@@ -115,58 +141,80 @@ const Topbar = ({location})=> {
           </RouterLink>
           <div className={classes.actions}>
             <IconButton
-              edge="start"
+              aria-label="app store button"
               className={classes.app_store}
               color="inherit"
-              aria-label="app store button"
+              edge="start"
               onClick = {
                 () => {
                   window.open('https://play.google.com/store/apps/details?id=in.aflog.app', '_blank');
                 }
               }
             >
-              <img src="/images/Header/play_store_banner.svg" alt="" />
+              <img
+                alt=""
+                src="/images/Header/play_store_banner.svg"
+              />
             </IconButton>
             <IconButton
-              edge="start"
+              aria-label="Google play button"
               className={classes.google_play}
               color="inherit"
-              aria-label="Google play button"
+              edge="start"
               onClick = {
                 () => {
                   window.open('https://apps.apple.com/in/app/aflog/id1452031355', '_blank');
                 }
               }
             >
-              <img src="/images/Header/app_store_banner.svg" alt="" />
+              <img
+                alt=""
+                src="/images/Header/app_store_banner.svg"
+              />
             </IconButton>
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <RouterLink to="/Home" className={classes.link}>
+            <NavLink
+              activeClassName={classes.linkActive}
+              className={classes.link}
+              to="/Home"
+            >
               Home
-            </RouterLink>
-            <RouterLink to="/About-us" className={classes.link}>
+            </NavLink>
+            <NavLink
+              activeClassName={classes.linkActive}
+              className={classes.link}
+              to="/About-us"
+            >
               About
-            </RouterLink>
-            <RouterLink to="/Contact" className={classes.link}>
+            </NavLink>
+            <NavLink
+              activeClassName={classes.linkActive}
+              className={classes.link}
+              to="/Contact"
+            >
               Contact
-            </RouterLink>
-            <RouterLink className={classes.link} onClick = {
-              () => {
-                window.open('https://forms.gle/H4GKcg6No9NDouSN6', '_blank');
+            </NavLink>
+            <NavLink
+              activeClassName={classes.linkActive}
+              className={classes.link}
+              onClick = {
+                () => {
+                  window.open('https://forms.gle/H4GKcg6No9NDouSN6', '_blank');
+                }
               }
-            }>
+            >
               Community
-            </RouterLink>
+            </NavLink>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
-              aria-label="show more"
               aria-controls={mobileMenuId}
               aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
+              aria-label="show more"
               color="inherit"
+              onClick={handleMobileMenuOpen}
             >
               <MoreIcon />
             </IconButton>
