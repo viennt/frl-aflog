@@ -4,7 +4,7 @@ import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    color: "black",
+    color: 'black',
     // position : 'relative'
   }
 }));
@@ -16,23 +16,23 @@ const ContactLocation = (props) => {
   return (
     <div className={classes.root}>
       <Map
+        gestureHandling="none"
         google={props.google}
-        zoom={17}
         initialCenter={{
           lat: 12.912610, lng: 77.588470
         }}
-        gestureHandling='none'
-        
+        zoom={17}
       >
         <Marker
-          onClick={onMarkerClick}
           name={'Current location'}
-          position={{ lat: 12.912610, lng: 77.588470 }} />
+          onClick={onMarkerClick}
+          position={{ lat: 12.912610, lng: 77.588470 }}
+        />
       </Map>
     </div>
-  );  
+  );
 }
 
 export default GoogleApiWrapper({
-  apiKey: ("AIzaSyAVnLqKfE1qYvI9Nr8c7i7VYDzDxSCraz4")
+  apiKey: ('AIzaSyAVnLqKfE1qYvI9Nr8c7i7VYDzDxSCraz4')
 })(ContactLocation);

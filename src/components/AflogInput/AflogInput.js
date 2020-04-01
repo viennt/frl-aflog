@@ -52,7 +52,7 @@ export default function AflogInput() {
         className={classes.input}
       />
       <IconButton color="primary" className={classes.iconButton} aria-label="directions">
-        <i class="fas fa-paper-plane"></i>
+        <i className="fas fa-paper-plane"></i>
       </IconButton>
     </Paper>
   );

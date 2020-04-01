@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import validate from 'validate.js';
 import {
@@ -13,8 +13,8 @@ import {
 import Avatar from '@material-ui/core/Avatar';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import clsx from 'clsx';
-import { emailContact } from "../../../../redux/actions/aflog";
-import { setAlert } from "../../../../redux/actions/alert";
+import { emailContact } from '../../../../redux/actions/aflog';
+import { setAlert } from '../../../../redux/actions/alert';
 
 const schema = {
   name: {
@@ -82,10 +82,10 @@ const useStyles = makeStyles(theme => ({
   done: {
     fontSize: '18px',
     fontWeight: 900,
-    display: "inline-block",
-    verticalAlign: "middle",
+    display: 'inline-block',
+    verticalAlign: 'middle',
     marginLeft: 5,
-    color: "#12aad8"
+    color: '#12aad8'
   },
   group: {
     display: 'flex',
@@ -159,16 +159,22 @@ const ContactInfo = ({
       variables,
     ).then(res => {
       setAlert('We have received your email', 'success');
+      setFormState({
+        isValid: false,
+        values: {},
+        touched: {},
+        errors: {}
+      });
     }).catch(err => setAlert('Oops, something went wrong', 'danger'))
   }
   const handleSubmit = e => {
     e.preventDefault();
     const templateId = 'template_XfuM3x0K';
     sendFeedback(templateId, {
-        message_html: formState.values.message,
-        from_name: formState.values.name,
-        to_email: formState.values.email
-      })
+      message_html: formState.values.message,
+      from_name: formState.values.name,
+      to_email: formState.values.email
+    })
   }
 
   const hasError = field =>
@@ -182,74 +188,104 @@ const ContactInfo = ({
         justify={'center'}
       >
         <Grid
-          item
           container
+          item
           justify={'center'}
-          xs={12}
           md={8}
+          xs={12}
         >
           <Grid
             item
-            xs={12}
             sm={6}
+            xs={12}
           >
             <div className="pr5">
-              <Typography component='h3' className={clsx("mb3", classes.heading)}>
+              <Typography
+                className={clsx('mb3', classes.heading)}
+                component="h3"
+              >
                 Get in touch
-            </Typography>
-              <Typography component={'p'} className={clsx("mb3", classes.para)}>
+              </Typography>
+              <Typography
+                className={clsx('mb3', classes.para)}
+                component={'p'}
+              >
                 Unlike your crush, we’re always available. Call, email or slide into our
                 DMs and we’ll make sure we don’t leave you on
-              {/* <i className"fas fa-check-double"></i> */}
+                {/* <i className"fas fa-check-double"></i> */}
                 <DoneAllIcon className={classes.done} />
               </Typography>
               <div className={classes.group}>
-                <i className="fas fa-mobile icons"></i>
+                <i className="fas fa-mobile icons" />
                 <Typography className={classes.label} >
                   +91 96203 36373
-              </Typography>
+                </Typography>
               </div>
               <div className={classes.group}>
                 {/* <i className"fas fa-envelope-open-text"></i> */}
-                <i className="fas fa-envelope-open icons"></i>
+                <i className="fas fa-envelope-open icons" />
                 <Typography className={classes.label} >
                   info@aflog.in
-              </Typography>
+                </Typography>
               </div>
               <div className={classes.group}>
-                <i className="fas fa-location-arrow icons"></i>
+                <i className="fas fa-location-arrow icons" />
                 <Typography className={classes.label} >
                   #1936, 5th Cross, 20th Main road, J.P.Nagar 2nd Phase,
                   Bangalore, Karnataka, 560078
-              </Typography>
+                </Typography>
               </div>
 
               <div className={classes.flex}>
-                <Avatar className={clsx(classes.small, classes.social)}>
-                  <i className="fab fa-facebook-f fb "></i>
-                </Avatar>
-                <Avatar className={clsx(classes.small, classes.social)}>
-                  <i className="fab fa-instagram insta"></i>
-                </Avatar>
-                <Avatar className={clsx(classes.small, classes.social)}>
-                  <i className="fab fa-linkedin-in linkedIn"></i>
-                </Avatar>
+                <a
+                  href="https://www.facebook.com/Afl0g"
+                  style={{color: '#bdbdbd'}}
+                  target="_blank"
+                >
+                  <Avatar className={clsx(classes.small, classes.social)}>
+                    <i className="fab fa-facebook-f fb " />
+                  </Avatar>
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/aflogindia/"
+                  style={{color: '#bdbdbd'}}
+                  target="_blank"
+                >
+                  <Avatar className={clsx(classes.small, classes.social)}>
+                    <i className="fab fa-linkedin-in linkedIn" />
+                  </Avatar>
+                </a>
+                <a
+                  href="https://twitter.com/aflog_in"
+                  style={{color: '#bdbdbd'}}
+                  target="_blank"
+                >
+                  <Avatar className={clsx(classes.small, classes.social)}>
+                    <i className="fab fa-twitter twitter" />
+                  </Avatar>
+                </a>
               </div>
             </div>
           </Grid>
           <Grid
             item
-            xs={12}
             sm={6}
+            xs={12}
           >
-            <div className={clsx("pr5", classes.mobile)}>
-              <Typography component='h3' className={clsx("mb3", classes.heading)}>
+            <div className={clsx('pr5', classes.mobile)}>
+              <Typography
+                className={clsx('mb3', classes.heading)}
+                component="h3"
+              >
                 Send a message
-            </Typography>
-              <Typography component={'p'} className={clsx("mb3", classes.para)}>
+              </Typography>
+              <Typography
+                className={clsx('mb3', classes.para)}
+                component={'p'}
+              >
                 This used to take a pigeon and a whole lotta patience back in the day.
                 Let’s all be grateful we’ve grown out of that.
-            </Typography>
+              </Typography>
               <form
                 className={classes.form}
                 onSubmit={handleSubmit}
@@ -260,34 +296,34 @@ const ContactInfo = ({
                   helperText={
                     hasError('name') ? formState.errors.name[0] : null
                   }
-                  onChange={handleChange}
                   label="Name"
                   name="name"
+                  onChange={handleChange}
                   value={formState.values.name || ''}
                 />
                 <TextField
                   className={classes.textField}
-                  label="Email"
-                  name="email"
                   error={hasError('email')}
                   helperText={
                     hasError('email') ? formState.errors.email[0] : null
                   }
+                  label="Email"
+                  name="email"
                   onChange={handleChange}
                   value={formState.values.email || ''}
                 />
                 <TextField
-                  id="textarea"
-                  label="Message"
-                  name="message"
                   error={hasError('message')}
                   helperText={
                     hasError('message') ? formState.errors.message[0] : null
                   }
-                  onChange={handleChange}
-                  value={formState.values.message || ''}
-                  rows="3"
+                  id="textarea"
+                  label="Message"
                   multiline
+                  name="message"
+                  onChange={handleChange}
+                  rows="3"
+                  value={formState.values.message || ''}
                 />
                 <div className="mb3" />
                 <Button
@@ -298,7 +334,7 @@ const ContactInfo = ({
 
                 >
                   Submit
-              </Button>
+                </Button>
 
               </form>
             </div>
