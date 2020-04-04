@@ -3,13 +3,16 @@ import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import Masonry from 'react-masonry-css';
 import { makeStyles } from '@material-ui/styles';
-import { Grid } from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 
 import TabPanel from './TabPanel';
 import { AflogCard } from '../../../../components';
 import { AflogCardSwap, AflogModal } from '../../../../components';
-import { getAllAflogs, getAflogsByCategory, clearAflog } from '../../../../redux/actions/aflog';
-
+// import { getAllAflogs, getAflogsByCategory, clearAflog } from '../../../../redux/actions/aflog';
+import axios from 'axios';
+import { apiLoading, apiSuccess, apiError } from '../../../../redux/actions/app';
+import { setAlert } from '../../../../redux/actions/alert';
+import { rootURL } from '../../../../utils/constants/apiUrl';
 
 function a11yProps(index) {
   return {
@@ -45,7 +48,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     width: 'auto',
     background: theme.palette.background.light,
-    minHeight : 400
+    minHeight : 400,
+    textAlign: 'right'
   },
   flexMasonryColumn: {
     backgroundClip: 'padding-box'
@@ -53,17 +57,25 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ContactInfo = ({
+  authToken,
+  user,
   error,
   hasMore,
-  apiLoading,
-  Aflogs,
-  getAllAflogs: getAllAflogsDispatcher
+  isApiLoading,
+  // Aflogs,
+  // getAllAflogs: getAllAflogsDispatcher,
+  setAlert: setAlertDispatcher,
+  apiLoading: apiLoadingDispatcher,
+  apiSuccess: apiSuccessDispatcher,
+  apiError: apiErrorDispatcher,
 }) => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const [page, setPage] = useState(1);
+  const [aflogsPage, setAflogsPage] = useState(1);
+  const [wishlistPage, setWishlistPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [aflogs, setAflogs] = useState([]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -74,19 +86,73 @@ const ContactInfo = ({
     setOpen(false);
   };
 
+  const getAflogPostedByUser = async (userId, page) => {
+    try {
+      apiLoadingDispatcher();
+      const res = await
+        axios.get(`${rootURL}/aflogger/get-aflogs?id=${userId}&page=${page}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${authToken}`
+            }
+          }
+        );
+  
+      if (res.data) {
+        setAflogs(res.data);
+        apiSuccessDispatcher();
+      }
+  
+    } catch (err) {
+      setAlertDispatcher(err.message, 'danger');
+      apiErrorDispatcher();
+    }
+  };
+
+  const getUserWishList = async (page) => {
+    try {
+      apiLoadingDispatcher();
+      const res = await
+        axios.get(`${rootURL}/wishlist/get-user-wishlist?page=${page}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${authToken}`
+            }
+          }
+        );
+  
+      if (res.data) {
+        setAflogs(res.data);
+        apiSuccessDispatcher();
+      }
+  
+    } catch (err) {
+      setAlertDispatcher(err.message, 'danger');
+      apiErrorDispatcher();
+    }
+  };
+
   useEffect(() => {
-    getAllAflogsDispatcher(page)
-  }, [page]);
+    if (value == 0) {
+      getAflogPostedByUser(user.id, aflogsPage);
+    } else {
+      getUserWishList(wishlistPage);
+    }
+  }, [aflogsPage, wishlistPage, value]);
 
   window.onscroll = debounce(() => {
-    if (error || apiLoading || !hasMore) return;
+    if (error || isApiLoading || !hasMore) return;
 
     // Checks that the page has scrolled to the bottom
     if (
       window.innerHeight + document.documentElement.scrollTop
       >= 0.9*document.documentElement.offsetHeight
     ) {
-      setPage(page + 1);
+      if (value == 0) {
+        setAflogsPage(aflogsPage + 1);
+      } else {
+        setWishlistPage(wishlistPage + 1);
+      }
     }
   }, 100);
 
@@ -103,7 +169,7 @@ const ContactInfo = ({
       >
         <AflogCardSwap
           selected={selectedIndex}
-          slides={Aflogs}
+          slides={aflogs}
         />
       </AflogModal>
 
@@ -134,8 +200,11 @@ const ContactInfo = ({
           className={classes.flexMasonry}
           columnClassName={classes.flexMasonryColumn}
         >
+          {isApiLoading &&
+            <div className={classes.loader}><CircularProgress /></div>
+          }
           {
-            Aflogs.map((item, index) => (
+            aflogs.map((item, index) => (
               <Grid
                 item
                 key={index}
@@ -167,8 +236,11 @@ const ContactInfo = ({
           className={classes.flexMasonry}
           columnClassName={classes.flexMasonryColumn}
         >
+          {isApiLoading &&
+            <div className={classes.loader}><CircularProgress /></div>
+          }
           {
-            Aflogs.map((item, index) => (
+            aflogs.map((item, index) => (
               <Grid
                 item
                 key={index}
@@ -186,6 +258,9 @@ const ContactInfo = ({
           }
         </Masonry>
       </TabPanel>
+      {(aflogs.length == 0) &&
+        <div>You did it! You reached the end!</div>
+      }
     </div>
   )
 };
@@ -193,11 +268,21 @@ const ContactInfo = ({
 const mapStateToProps = state => ({
   error: state.aflogState.error,
   hasMore: state.aflogState.hasMore,
-  apiLoading: state.appState.apiLoading,
-  Aflogs: state.aflogState.Aflogs,
+  isApiLoading: state.appState.apiLoading,
+  // Aflogs: state.aflogState.Aflogs,
+  user: state.authState.user,
+  authToken: state.authState.authToken
 });
 
 export default connect(
   mapStateToProps,
-  { getAllAflogs, getAflogsByCategory, clearAflog }
+  {
+    // getAllAflogs,
+    // getAflogsByCategory,
+    // clearAflog,
+    apiLoading,
+    apiSuccess,
+    apiError,
+    setAlert 
+  }
 )(ContactInfo);
