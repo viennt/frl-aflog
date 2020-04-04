@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { setAlert } from './alert';
 import { apiLoading, apiSuccess, apiError } from './app';
+import { rootURL } from '../../utils/constants/apiUrl';
 
 import {
   SET_CATEGORY,
@@ -11,7 +12,7 @@ import {
 
 // import data from '../../categories/dummyall';
 
-const rootURl = 'https://devaf.in/api/v1/web/aflogs';
+const apiURL = `${rootURL}/web/aflogs`;
 
 export const setCategory = (cat) => {
   return {
@@ -29,7 +30,7 @@ export const getAllAflogs = (page_count) => async dispatch => {
   try {
     dispatch(apiLoading());
     const res = await
-    axios.get(`${rootURl}?page=${page_count}`);
+      axios.get(`${apiURL}?page=${page_count}`);
 
     if (res.data) {
       dispatch({
@@ -50,7 +51,7 @@ export const getAflogsByCategory = (page_count , categoryId) => async dispatch =
   try {
     dispatch(apiLoading());
     const res = await
-    axios.get(`${rootURl}/category?id=${categoryId}&page=${page_count}`);
+      axios.get(`${apiURL}/category?id=${categoryId}&page=${page_count}`);
 
     if (res.data) {
       dispatch({
@@ -69,7 +70,7 @@ export const getAflogsByCategory = (page_count , categoryId) => async dispatch =
 export const emailContact = (data) => async dispatch => {
   try {
     dispatch(apiLoading());
-    const res = await axios.post(`${rootURl}?message=${data}`);
+    const res = await axios.post(`${apiURL}?message=${data}`);
     if (res) {
       dispatch(apiSuccess());}
 

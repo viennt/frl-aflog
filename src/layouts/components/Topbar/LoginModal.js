@@ -3,6 +3,8 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import validate from 'validate.js';
+import { connect } from 'react-redux';
+import { login } from '../../../redux/actions/auth';
 
 const schema = {
   email: {
@@ -19,7 +21,11 @@ const schema = {
   },
 };
 
-const LoginModal = ({ open, onClose }) => {
+const LoginModal = ({
+  open,
+  onClose,
+  login: loginDispatcher
+}) => {
   const classes = useStyles();
 
   const [formState, setFormState] = useState({
@@ -60,9 +66,7 @@ const LoginModal = ({ open, onClose }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    // TODO:
-    console.log(formState.values.email);
-    console.log(formState.values.password);
+    loginDispatcher(formState.values.email, formState.values.password);
   }
 
   return (
@@ -220,4 +224,4 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default LoginModal;
+export default connect(null, { login })(LoginModal);

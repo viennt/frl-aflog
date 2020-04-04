@@ -6,3 +6,9 @@ export const SET_CATEGORY = 'SET_CATEGORY';
 export const GET_ALL_AFLOGS = 'GET_ALL_AFLOGS';
 export const GET_AFLOGS_BY_CATEGORY = 'GET_AFLOGS_BY_CATEGORY';
 export const CLEAR_AFLOGS = 'CLEAR_AFLOGS';
+
+// authenticate
+export const LOGOUT = 'LOGOUT';
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
