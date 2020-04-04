@@ -9,56 +9,59 @@ import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 
-const useStyles = makeStyles(theme => ({
-  aflog_navbar: {
-    flexGrow: 1,
-  },
-  grow:{
-    flexGrow: 1
-  },
-  logo:{
-    paddingRight : '30px'
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
+const useStyles = makeStyles(theme => {
+  console.log(theme);
+  return ({
+    aflog_navbar: {
+      flexGrow: 1,
     },
-  },
-  appbar_custom:{
-    backgroundColor: theme.palette.black
-  },
-  link:{
-    textDecoration : 'none',
-    color: theme.palette.white,
-    padding : '0 15px',
-    fontSize : '13px',
-    fontFamily: 'Muli, sans-serif'
-  },
-  linkActive:{
-    fontWeight: '900',
-    color: '#5B63F8',
-  },
-  mobilelink:{
-    fontFamily: 'Muli, sans-serif',
-    textDecoration : 'none',
-    color: theme.palette.black,
-    padding : '0 15px',
-    fontSize : '13px'
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
+    grow:{
+      flexGrow: 1
     },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
+    logo:{
+      paddingRight : '30px'
+    },
+    title: {
       display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+      },
     },
-  },
-}));
+    appbar_custom:{
+      backgroundColor: theme.palette.common.black
+    },
+    link:{
+      textDecoration : 'none',
+      color: theme.palette.common.white,
+      padding : '0 15px',
+      fontSize : '13px',
+      fontFamily: 'Muli, sans-serif'
+    },
+    linkActive:{
+      fontWeight: '900',
+      color: '#5B63F8',
+    },
+    mobilelink:{
+      fontFamily: 'Muli, sans-serif',
+      textDecoration : 'none',
+      color: theme.palette.common.black,
+      padding : '0 15px',
+      fontSize : '13px'
+    },
+    sectionDesktop: {
+      display: 'none',
+      [theme.breakpoints.up('md')]: {
+        display: 'flex',
+      },
+    },
+    sectionMobile: {
+      display: 'flex',
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      },
+    },
+  })
+});
 
 const Topbar = ({location})=> {
   const classes = useStyles();
@@ -195,6 +198,20 @@ const Topbar = ({location})=> {
               to="/Contact"
             >
               Contact
+            </NavLink>
+            <NavLink
+              activeClassName={classes.linkActive}
+              className={classes.link}
+              to="/Collaborate"
+            >
+              Collaborate
+            </NavLink>
+            <NavLink
+              activeClassName={classes.linkActive}
+              className={classes.link}
+              to="/Profile"
+            >
+              Profile
             </NavLink>
             <NavLink
               activeClassName={classes.linkActive}

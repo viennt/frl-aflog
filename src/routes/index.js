@@ -10,6 +10,7 @@ import {
   NotFound as NotFoundView,
   About as AboutView,
   Contact as ContactView,
+  Profile as ProfileView
 } from '../views';
 
 const Routes = () => {
@@ -26,13 +27,13 @@ const Routes = () => {
           exact
           layout={MainLayout}
           path="/Landing"
-        /> 
+        />
         <RouteWithLayout
           component={HomeView}
           exact
           layout={MainLayout}
           path="/Home"
-        /> 
+        />
         <RouteWithLayout
           component={AboutView}
           exact
@@ -44,7 +45,13 @@ const Routes = () => {
           exact
           layout={MinimalLayout}
           path="/Contact"
-        />    
+        />
+        <RouteWithLayout
+          component={ProfileView}
+          exact
+          layout={MinimalLayout}
+          path="/Profile"
+        />
         <RouteWithLayout
           component={NotFoundView}
           exact
