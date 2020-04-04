@@ -8,66 +8,73 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
+import LoginModal from './LoginModal';
 
-const useStyles = makeStyles(theme => {
-  console.log(theme);
-  return ({
-    aflog_navbar: {
-      flexGrow: 1,
+const useStyles = makeStyles(theme => ({
+  aflog_navbar: {
+    flexGrow: 1,
+  },
+  grow:{
+    flexGrow: 1
+  },
+  logo:{
+    paddingRight : '30px'
+  },
+  title: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
     },
-    grow:{
-      flexGrow: 1
-    },
-    logo:{
-      paddingRight : '30px'
-    },
-    title: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-      },
-    },
-    appbar_custom:{
-      backgroundColor: theme.palette.common.black
-    },
-    link:{
-      textDecoration : 'none',
-      color: theme.palette.common.white,
-      padding : '0 15px',
-      fontSize : '13px',
-      fontFamily: 'Muli, sans-serif'
-    },
-    linkActive:{
-      fontWeight: '900',
-      color: '#5B63F8',
-    },
-    mobilelink:{
-      fontFamily: 'Muli, sans-serif',
-      textDecoration : 'none',
-      color: theme.palette.common.black,
-      padding : '0 15px',
-      fontSize : '13px'
-    },
-    sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-        display: 'flex',
-      },
-    },
-    sectionMobile: {
+  },
+  appbar_custom:{
+    backgroundColor: theme.palette.common.black
+  },
+  link:{
+    textDecoration : 'none',
+    color: theme.palette.common.white,
+    padding : '0 15px',
+    fontSize : '13px',
+    fontFamily: 'Muli, sans-serif'
+  },
+  linkActive:{
+    fontWeight: '900',
+    color: '#5B63F8',
+  },
+  mobilelink:{
+    fontFamily: 'Muli, sans-serif',
+    textDecoration : 'none',
+    color: theme.palette.common.black,
+    padding : '0 15px',
+    fontSize : '13px'
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
       display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
-      },
     },
-  })
-});
+  },
+  sectionMobile: {
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  },
+}));
 
 const Topbar = ({location})=> {
   const classes = useStyles();
 
+  const [openLoginModal, setOpenLoginModal] = React.useState(true);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleLoginModalOpen = () => {
+    setOpenLoginModal(true);
+  };
+
+  const handleLoginModalClose = () => {
+    setOpenLoginModal(false);
+  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -124,6 +131,13 @@ const Topbar = ({location})=> {
         </RouterLink>
       </MenuItem>
     </Menu>
+  );
+
+  const renderLoginModal = (
+    <LoginModal
+      onClose={handleLoginModalClose}
+      open={openLoginModal}
+    />
   );
 
   return (
@@ -188,6 +202,13 @@ const Topbar = ({location})=> {
             <NavLink
               activeClassName={classes.linkActive}
               className={classes.link}
+              to="/Collaborate"
+            >
+              Collaborate
+            </NavLink>
+            <NavLink
+              activeClassName={classes.linkActive}
+              className={classes.link}
               to="/About-us"
             >
               About
@@ -198,13 +219,6 @@ const Topbar = ({location})=> {
               to="/Contact"
             >
               Contact
-            </NavLink>
-            <NavLink
-              activeClassName={classes.linkActive}
-              className={classes.link}
-              to="/Collaborate"
-            >
-              Collaborate
             </NavLink>
             <NavLink
               activeClassName={classes.linkActive}
@@ -224,6 +238,13 @@ const Topbar = ({location})=> {
             >
               Community
             </NavLink>
+            <NavLink
+              activeClassName={classes.linkActive}
+              className={classes.link}
+              onClick={handleLoginModalOpen}
+            >
+              Sign in
+            </NavLink>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -239,6 +260,7 @@ const Topbar = ({location})=> {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
+      {renderLoginModal}
     </div>
   );
 }

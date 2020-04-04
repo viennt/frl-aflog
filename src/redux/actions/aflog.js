@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 import { setAlert } from './alert';
-import { apiLoading, apiSuccess, apiError } from "./app";
+import { apiLoading, apiSuccess, apiError } from './app';
 
 import {
   SET_CATEGORY,
@@ -29,7 +29,7 @@ export const getAllAflogs = (page_count) => async dispatch => {
   try {
     dispatch(apiLoading());
     const res = await
-      axios.get(`${rootURl}?page=${page_count}`);
+    axios.get(`${rootURl}?page=${page_count}`);
 
     if (res.data) {
       dispatch({
@@ -50,7 +50,7 @@ export const getAflogsByCategory = (page_count , categoryId) => async dispatch =
   try {
     dispatch(apiLoading());
     const res = await
-      axios.get(`${rootURl}/category?id=${categoryId}&page=${page_count}`);
+    axios.get(`${rootURl}/category?id=${categoryId}&page=${page_count}`);
 
     if (res.data) {
       dispatch({

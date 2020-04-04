@@ -2,10 +2,14 @@ import { colors } from '@material-ui/core';
 
 const white = '#FFFFFF';
 const black = '#000000';
+const google = '#EA4334';
+const facebook = '#295DC9';
 
 export default {
   black,
   white,
+  google,
+  facebook,
   text: {
     primary: '#5d65ee',
     secondary: '#333333',
