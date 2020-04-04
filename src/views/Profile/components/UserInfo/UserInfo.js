@@ -42,15 +42,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ContactInfo = () => {
+const ContactInfo = ({
+  userInfo
+}) => {
   const classes = useStyles();
-
-  const userAvatar = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200';
-  const userDisplayName = 'John Appleseed';
-  const userDescription = 'Lorem Ipsum has been the industrys';
-  const userStars = '5,000';
-  const userViews = '5,000';
-  const userRedirects = '5,000';
 
   return (
     <div className={classes.roots}>
@@ -63,20 +58,20 @@ const ContactInfo = () => {
           maxWidth="sm"
         >
           <Avatar
-            alt={userDisplayName}
+            alt={userInfo.name}
             className={classes.avatar}
-            src={userAvatar}
+            src={userInfo.image}
           />
         </Container>
         <div
           className={classes.userDisplayName}
         >
-          {userDisplayName}
+          {userInfo.name}
         </div>
         <div
           className={classes.userDescription}
         >
-          {userDescription}
+          {userInfo.description}
         </div>
 
         <Grid
@@ -89,21 +84,21 @@ const ContactInfo = () => {
             item
             xs={4}
           >
-            <div className={classes.statsNumber}>{userStars}</div>
+            <div className={classes.statsNumber}>{userInfo.like}</div>
             <div className={classes.statsText}>Stars</div>
           </Grid>
           <Grid
             item
             xs={4}
           >
-            <div className={classes.statsNumber}>{userViews}</div>
+            <div className={classes.statsNumber}>{userInfo.view}</div>
             <div className={classes.statsText}>Views</div>
           </Grid>
           <Grid
             item
             xs={4}
           >
-            <div className={classes.statsNumber}>{userRedirects}</div>
+            <div className={classes.statsNumber}>{userInfo.share}</div>
             <div className={classes.statsText}>Redirects</div>
           </Grid>
         </Grid>
@@ -112,4 +107,8 @@ const ContactInfo = () => {
   )
 };
 
-export default connect(null, { setAlert })(ContactInfo);
+const mapStateToProps = state => ({
+  userInfo: state.authState.user
+});
+
+export default connect(mapStateToProps, { setAlert })(ContactInfo);
