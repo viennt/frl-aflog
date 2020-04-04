@@ -2,16 +2,17 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import BackToTopButton from '../components/BackToTopButton';
 import { Grid } from '@material-ui/core';
-import { UserInfo, UserAflogs } from './components';
+import { UserInfo, UserAflogs, Logout } from './components';
 
 const useStyles = makeStyles(theme => ({
   profile_root: {
     padding: theme.spacing(4),
     boxSizing: 'borderBox',
     backgroundColor: '#FAFAFA',
-    '& *': {
+    '& *:not(i)': {
       fontFamily: 'Muli, sans-serif !important'
     },
+
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
       width: 170,
@@ -54,6 +55,7 @@ const Profile = () => {
             xs={12}
           >
             <UserInfo/>
+            <Logout />
           </Grid>
           <Grid
             item
