@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 const Topbar = ({location})=> {
   const classes = useStyles();
 
-  const [openLoginModal, setOpenLoginModal] = React.useState(true);
+  const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
