@@ -1,4 +1,4 @@
-import { 
+import {
   LOGOUT,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -26,7 +26,7 @@ export default (state = initialState, { type, payload }) => {
       };
     case LOGIN_SUCCESS:
       return {
-        logginIn: true,
+        loggedIn: true,
         authToken: payload.auth_token,
         user: JSON.stringify(payload.user)
       };

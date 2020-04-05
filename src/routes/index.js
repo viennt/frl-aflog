@@ -7,10 +7,13 @@ import { Minimal as MinimalLayout} from '../layouts';
 import {
   Landing as LandingView,
   Home as HomeView,
-  NotFound as NotFoundView,
+  CollaboratePreLog as CollaboratePreLogView,
+
+  Profile as ProfileView,
+
   About as AboutView,
   Contact as ContactView,
-  Profile as ProfileView
+  NotFound as NotFoundView,
 } from '../views';
 
 const Routes = () => {
@@ -35,6 +38,20 @@ const Routes = () => {
           path="/Home"
         />
         <RouteWithLayout
+          component={CollaboratePreLogView}
+          exact
+          layout={MainLayout}
+          path="/Collaborate"
+        />
+
+        <RouteWithLayout
+          component={ProfileView}
+          exact
+          layout={MinimalLayout}
+          path="/Profile"
+        />
+
+        <RouteWithLayout
           component={AboutView}
           exact
           layout={MinimalLayout}
@@ -45,12 +62,6 @@ const Routes = () => {
           exact
           layout={MinimalLayout}
           path="/Contact"
-        />
-        <RouteWithLayout
-          component={ProfileView}
-          exact
-          layout={MinimalLayout}
-          path="/Profile"
         />
         <RouteWithLayout
           component={NotFoundView}

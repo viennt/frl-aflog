@@ -8,3 +8,5 @@ export { default as AflogCategoryTags } from './AflogCategoryTags';
 export { default as AflogLandingOverlay } from './AflogLandingOverlay';
 export { default as AflogCardSwap } from './AflogCardSwap';
 export { default as AflogDetail } from './AflogDetail';
+
+export { default as CampaignCard } from './CampaignCard';

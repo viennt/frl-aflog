@@ -1,7 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import BackToTopButton from '../components/BackToTopButton';
 import { Grid } from '@material-ui/core';
+
+import BackToTopButton from '../components/BackToTopButton';
 import { UserInfo, UserAflogs, Logout } from './components';
 
 const useStyles = makeStyles(theme => ({

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
@@ -7,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Avatar from '@material-ui/core/Avatar';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 import LoginModal from './LoginModal';
 
@@ -59,9 +61,14 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
+  avatar: {
+    margin: `-${theme.spacing(1)}px`,
+    width: `${theme.spacing(4)}px !important`,
+    height: `${theme.spacing(4)}px !important`,
+  },
 }));
 
-const Topbar = ({location})=> {
+const Topbar = ({userInfo, loggedIn})=> {
   const classes = useStyles();
 
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
@@ -223,13 +230,6 @@ const Topbar = ({location})=> {
             <NavLink
               activeClassName={classes.linkActive}
               className={classes.link}
-              to="/Profile"
-            >
-              Profile
-            </NavLink>
-            <NavLink
-              activeClassName={classes.linkActive}
-              className={classes.link}
               onClick = {
                 () => {
                   window.open('https://forms.gle/H4GKcg6No9NDouSN6', '_blank');
@@ -238,13 +238,37 @@ const Topbar = ({location})=> {
             >
               Community
             </NavLink>
-            <NavLink
-              activeClassName={classes.linkActive}
-              className={classes.link}
-              onClick={handleLoginModalOpen}
-            >
-              Sign in
-            </NavLink>
+            {
+              loggedIn ? (
+                <>
+                  <NavLink
+                    activeClassName={classes.linkActive}
+                    className={classes.link}
+                  >
+                    <i className="fas fa-bell" />
+                  </NavLink>
+                  <NavLink
+                    activeClassName={classes.linkActive}
+                    className={classes.link}
+                    to="/Profile"
+                  >
+                    <Avatar
+                      alt={userInfo.name}
+                      className={classes.avatar}
+                      src={userInfo.image}
+                    />
+                  </NavLink>
+                </>
+              ) : (
+                <NavLink
+                  activeClassName={classes.linkActive}
+                  className={classes.link}
+                  onClick={handleLoginModalOpen}
+                >
+                  Sign in
+                </NavLink>
+              )
+            }
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -265,4 +289,9 @@ const Topbar = ({location})=> {
   );
 }
 
-export default withRouter(Topbar);
+const mapStateToProps = state => ({
+  userInfo: state.authState.user,
+  loggedIn: state.authState.loggedIn,
+});
+
+export default connect(mapStateToProps)(withRouter(Topbar));

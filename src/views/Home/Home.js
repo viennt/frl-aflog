@@ -120,36 +120,34 @@ const Home = ({
         setCat={setCategory}
         setPage={setPage}
       />
-      {
-        <Masonry
-          breakpointCols={{
-            default: 4,
-            1100: 3,
-            700: 2,
-            500: 1
-          }}
-          className={classes.flexMasonry}
-          columnClassName={classes.flexMasonryColumn}
-        >
-          {
-            Aflogs.map((item, index) => (
-              <Grid
-                item
-                key={index}
-                onClick={() => {
-                  setSelectedIndex(index);
-                }}
-              >
-                <AflogCard
-                  aflog={item}
-                  handleClose={handleClose}
-                  handleOpen={handleOpen}
-                />
-              </Grid>
-            ))
-          }
-        </Masonry>
-      }
+      <Masonry
+        breakpointCols={{
+          default: 4,
+          1100: 3,
+          700: 2,
+          500: 1
+        }}
+        className={classes.flexMasonry}
+        columnClassName={classes.flexMasonryColumn}
+      >
+        {
+          Aflogs.map((item, index) => (
+            <Grid
+              item
+              key={index}
+              onClick={() => {
+                setSelectedIndex(index);
+              }}
+            >
+              <AflogCard
+                aflog={item}
+                handleClose={handleClose}
+                handleOpen={handleOpen}
+              />
+            </Grid>
+          ))
+        }
+      </Masonry>
       {apiLoading &&
         <div className={classes.loader}><CircularProgress /></div>
       }

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import Masonry from 'react-masonry-css';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, CircularProgress } from '@material-ui/core';
 
-import TabPanel from './TabPanel';
 import { AflogCard } from '../../../../components';
 import { AflogCardSwap, AflogModal } from '../../../../components';
-// import { getAllAflogs, getAflogsByCategory, clearAflog } from '../../../../redux/actions/aflog';
-import axios from 'axios';
 import { apiLoading, apiSuccess, apiError } from '../../../../redux/actions/app';
 import { setAlert } from '../../../../redux/actions/alert';
 import { rootURL } from '../../../../utils/constants/apiUrl';
+import TabPanel from './TabPanel';
 
 function a11yProps(index) {
   return {
@@ -62,8 +61,6 @@ const ContactInfo = ({
   error,
   hasMore,
   isApiLoading,
-  // Aflogs,
-  // getAllAflogs: getAllAflogsDispatcher,
   setAlert: setAlertDispatcher,
   apiLoading: apiLoadingDispatcher,
   apiSuccess: apiSuccessDispatcher,
@@ -90,19 +87,19 @@ const ContactInfo = ({
     try {
       apiLoadingDispatcher();
       const res = await
-        axios.get(`${rootURL}/aflogger/get-aflogs?id=${userId}&page=${page}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${authToken}`
-            }
+      axios.get(`${rootURL}/aflogger/get-aflogs?id=${userId}&page=${page}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
           }
-        );
-  
+        }
+      );
+
       if (res.data) {
         setAflogs(res.data);
         apiSuccessDispatcher();
       }
-  
+
     } catch (err) {
       setAlertDispatcher(err.message, 'danger');
       apiErrorDispatcher();
@@ -113,19 +110,19 @@ const ContactInfo = ({
     try {
       apiLoadingDispatcher();
       const res = await
-        axios.get(`${rootURL}/wishlist/get-user-wishlist?page=${page}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${authToken}`
-            }
+      axios.get(`${rootURL}/wishlist/get-user-wishlist?page=${page}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
           }
-        );
-  
+        }
+      );
+
       if (res.data) {
         setAflogs(res.data);
         apiSuccessDispatcher();
       }
-  
+
     } catch (err) {
       setAlertDispatcher(err.message, 'danger');
       apiErrorDispatcher();
@@ -283,6 +280,6 @@ export default connect(
     apiLoading,
     apiSuccess,
     apiError,
-    setAlert 
+    setAlert
   }
 )(ContactInfo);
