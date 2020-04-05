@@ -95,18 +95,39 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     margin: `${theme.spacing(2)}px!important`,
   },
+  uploadTips: {
+    width: '100%',
+    fontSize: '14px',
+    marginLeft: `${theme.spacing(2)}px!important`,
+    marginRight: `${theme.spacing(2)}px!important`,
+    marginBottom: `-${theme.spacing(2)}px!important`,
+    textAlign: 'left'
+  },
+  uploadTipsHow: {
+    textDecoration: 'underline',
+    color: theme.palette.text.primary,
+    cursor: 'pointer'
+  },
   upload: {
     width: '100%',
     margin: `${theme.spacing(2)}px!important`,
+    padding: `${theme.spacing(2)}px!important`,
     borderStyle: 'solid',
     borderWidth: '1px',
     borderColor: '#c4c4c4',
+    backgroundColor: '#FAFAFA',
+    fontWeight: 700,
     borderRadius: '4px',
     cursor: 'pointer',
     '& div': {
+      '& i': {
+        fontSize: '21px',
+        padding: theme.spacing(1, 4),
+      },
       width: '100%',
       height: '100%',
       display: 'flex',
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
     }
@@ -322,6 +343,11 @@ const ApplyCollaborate = ({
               sm={6}
               xs={12}
             >
+              <>
+              <div className={classes.uploadTips}>
+                <span>Upload Your Instagram Profile Insights</span>{' '}
+                <span className={classes.uploadTipsHow}>How?</span>
+              </div>
               <div className={classes.upload}>
                 <ImagePicker
                   dims={{minWidth: 100, maxWidth: 5000, minHeight: 100, maxHeight: 5000}}
@@ -329,9 +355,13 @@ const ApplyCollaborate = ({
                   onChange={base64 => {setImage(b64toBlob(base64))}}
                   onError={errMsg => {}}
                 >
-                  <div>Click to upload image</div>
+                  <div>
+                    <i className="fas fa-upload" />
+                    <span>Upload</span>
+                  </div>
                 </ImagePicker>
               </div>
+              </>
             </Grid>
             <Grid
               container

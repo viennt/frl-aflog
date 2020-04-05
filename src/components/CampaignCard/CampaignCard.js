@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: '100%',
     padding: theme.spacing(2),
+    backgroundImage: 'linear-gradient(transparent, transparent, #000000AA)'
   },
   brandImage: {
     width: theme.spacing(5),
