@@ -47,11 +47,11 @@ export const logout = (token) => async dispatch => {
       }
     );
     if (res.data) {
-      localStorage.removeItem('token');
+      localStorage.removeItem('auth_token');
       localStorage.removeItem('user');
       dispatch({ type: LOGOUT });
-      history.push('/Home');
       dispatch(apiSuccess());
+      history.push('/Home');
     }
   } catch (err) {
     dispatch(setAlert(err.message, 'danger'));
