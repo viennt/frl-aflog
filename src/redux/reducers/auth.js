@@ -10,9 +10,7 @@ let authToken = localStorage.getItem('auth_token');
 const initialState = {
   loggedIn: authToken ? true : false,
   authToken: authToken ? authToken : null,
-  user: user ? user : {},
-  username: null,
-  password: null
+  user: user ? user : {}
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -29,9 +27,17 @@ export default (state = initialState, { type, payload }) => {
         user: payload.user
       };
     case LOGIN_FAILURE:
-      return initialState;
+      return {
+        loggedIn: false,
+        authToken: null,
+        user: {}
+      };
     case LOGOUT:
-      return initialState;
+      return {
+        loggedIn: false,
+        authToken: null,
+        user: {}
+      };
     default:
       return state;
   }

@@ -25,7 +25,6 @@ export const login = (username, password) => async dispatch => {
         type: LOGIN_SUCCESS,
         payload: res.data
       });
-      history.push('/Profile');
       dispatch(apiSuccess());
     }
   } catch (err) {
