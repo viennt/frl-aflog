@@ -7,9 +7,6 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.common.black,
     paddingTop: theme.spacing(6),
     paddingBottom: theme.spacing(6),
-    '& *:not(i)': {
-      fontFamily: 'Muli, sans-serif !important'
-    },
   },
   header: {
     fontSize: '42px',

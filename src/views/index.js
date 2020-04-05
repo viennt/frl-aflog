@@ -1,6 +1,6 @@
 export { default as Landing } from './Landing';
 export { default as Home } from './Home';
-export { default as CollaboratePreLog } from './CollaboratePreLog';
+export { default as Collaborate } from './Collaborate';
 
 export { default as Profile } from './Profile';
 

@@ -7,10 +7,7 @@ import { CampaignCard } from '../../../components';
 const useStyles = makeStyles(theme => ({
   roots: {
     backgroundColor: theme.palette.common.white,
-    '& *:not(i)': {
-      fontFamily: 'Muli, sans-serif !important'
-    },
-    padding: theme.spacing(4, 2),
+    padding: theme.spacing(4, 2, 2, 2),
   },
   header: {
     textAlign: 'center',

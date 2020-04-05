@@ -23,7 +23,9 @@ const useStyles = makeStyles(theme => ({
   userDisplayName: {
     margin: `${theme.spacing(2)}px !important`,
     fontWeight: 900,
-    fontSize: '18px'
+    fontSize: '18px',
+    width: '100%',
+    textAlign: 'center'
   },
   userDescription: {
     margin: `${theme.spacing(2)}px !important`,
@@ -63,16 +65,8 @@ const ContactInfo = ({
             src={userInfo.image}
           />
         </Container>
-        <div
-          className={classes.userDisplayName}
-        >
-          {userInfo.name}
-        </div>
-        <div
-          className={classes.userDescription}
-        >
-          {userInfo.description}
-        </div>
+        {userInfo.name && <div className={classes.userDisplayName}>{userInfo.name}</div>}
+        {userInfo.description && <div className={classes.userDescription}>{userInfo.description}</div>}
 
         <Grid
           container

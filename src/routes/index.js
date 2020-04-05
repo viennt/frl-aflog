@@ -7,7 +7,7 @@ import { Minimal as MinimalLayout} from '../layouts';
 import {
   Landing as LandingView,
   Home as HomeView,
-  CollaboratePreLog as CollaboratePreLogView,
+  Collaborate as CollaborateView,
 
   Profile as ProfileView,
 
@@ -38,7 +38,7 @@ const Routes = () => {
           path="/Home"
         />
         <RouteWithLayout
-          component={CollaboratePreLogView}
+          component={CollaborateView}
           exact
           layout={MainLayout}
           path="/Collaborate"
