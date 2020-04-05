@@ -23,19 +23,11 @@ const Collaborate = ({loggedIn}) => {
       <BackToTopButton />
       {
         !appliedCollaborate ? (
-          <CollaborateHeader />
-        ) : null
-      }
-      {
-        loggedIn ? (
-          <div>List campaigns</div>
-        ) : (
-          <AvailableCampaigns />
-        )
-      }
-      {
-        !appliedCollaborate ? (
-          <ApplyCollaborate />
+          <>
+            <CollaborateHeader />
+            <AvailableCampaigns />
+            <ApplyCollaborate />
+          </>
         ) : null
       }
     </div>

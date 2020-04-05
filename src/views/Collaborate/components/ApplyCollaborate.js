@@ -312,7 +312,7 @@ const ApplyCollaborate = ({ loggedIn }) => {
   return (
     <div className={classes.roots}>
       <div className={classes.header}>Apply to be part of Collaborate!</div>
-      {loggedIn ? renderSignUp : renderApplyForm}
+      {!loggedIn ? renderSignUp : renderApplyForm}
       <div className={classes.quote}>
         <i className="fas fa-quote-left" /><br/>
         <span>Influencer marketing, an industry worth about $700 million in 2016, will top $10 billion by 2020.</span>
