@@ -4,8 +4,11 @@ import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { ImagePicker } from 'react-file-picker'
-
+import { ImagePicker } from 'react-file-picker';
+import { apiLoading, apiSuccess, apiError } from '../../../redux/actions/app';
+import { setAlert } from '../../../redux/actions/alert';
+import { rootURL } from '../../../utils/constants/apiUrl';
+import axios from 'axios';
 import LoginModal from '../../../layouts/components/Topbar/LoginModal';
 
 const schema = {
@@ -122,7 +125,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ApplyCollaborate = ({ loggedIn }) => {
+const ApplyCollaborate = ({
+  loggedIn,
+  user,
+  authToken,
+  error,
+  hasMore,
+  isApiLoading,
+  setAlert: setAlertDispatcher,
+  apiLoading: apiLoadingDispatcher,
+  apiSuccess: apiSuccessDispatcher,
+  apiError: apiErrorDispatcher
+}) => {
   const classes = useStyles();
 
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -132,6 +146,7 @@ const ApplyCollaborate = ({ loggedIn }) => {
     touched: {},
     errors: {}
   });
+  const [image, setImage] = useState('');
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
@@ -170,9 +185,51 @@ const ApplyCollaborate = ({ loggedIn }) => {
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
 
+  const applyCollaborate = async (authToken, formData) => {
+    try {
+      apiLoadingDispatcher();
+      const res = await
+        axios.post(`${rootURL}/collaborate/apply`,
+          formData,
+          {
+            headers: {
+              'Authorization': `Bearer ${authToken}`
+            }
+          }
+        );
+      if (res.data) {
+        apiSuccessDispatcher();
+      }
+  
+    } catch (err) {
+      setAlertDispatcher(err.message, 'danger');
+      apiErrorDispatcher();
+    }
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(formState.values);
+    const formData = new FormData();
+    formData.append(`insights_image[0]`, image);
+    formData.append(`ig_handle`, formState.values.instagramUsername);
+    formData.append(`phone_number`, formState.values.phoneNumber);
+    formData.append(`location`, formState.values.location);
+    formData.append(`email`, 'user.email');
+    formData.append(`name`, user.name);
+    formData.append(`profile_image`, user.image);
+    formData.append(`act_user_id`, user.id);
+    applyCollaborate(authToken, formData);
+  }
+
+  const b64toBlob = (dataURI) => {
+    const byteString = atob(dataURI.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: 'image/jpeg' });
   }
 
   const renderSignUp = (
@@ -233,7 +290,6 @@ const ApplyCollaborate = ({ loggedIn }) => {
                 name="phoneNumber"
                 onChange={handleChange}
                 size="small"
-                type="email"
                 value={formState.values.phoneNumber || ''}
                 variant="outlined"
               />
@@ -255,7 +311,6 @@ const ApplyCollaborate = ({ loggedIn }) => {
                 name="instagramUsername"
                 onChange={handleChange}
                 size="small"
-                type="password"
                 value={formState.values.instagramUsername || ''}
                 variant="outlined"
               />
@@ -269,9 +324,9 @@ const ApplyCollaborate = ({ loggedIn }) => {
             >
               <div className={classes.upload}>
                 <ImagePicker
-                  dims={{minWidth: 100, maxWidth: 500, minHeight: 100, maxHeight: 500}}
+                  dims={{minWidth: 100, maxWidth: 5000, minHeight: 100, maxHeight: 5000}}
                   extensions={['jpg', 'jpeg', 'png']}
-                  onChange={base64 => {}}
+                  onChange={base64 => {setImage(b64toBlob(base64))}}
                   onError={errMsg => {}}
                 >
                   <div>Click to upload image</div>
@@ -295,7 +350,6 @@ const ApplyCollaborate = ({ loggedIn }) => {
                 name="location"
                 onChange={handleChange}
                 size="small"
-                type="password"
                 value={formState.values.location || ''}
                 variant="outlined"
               />
@@ -323,6 +377,19 @@ const ApplyCollaborate = ({ loggedIn }) => {
 
 const mapStateToProps = state => ({
   loggedIn: state.authState.loggedIn,
+  error: state.aflogState.error,
+  hasMore: state.aflogState.hasMore,
+  isApiLoading: state.appState.apiLoading,
+  authToken: state.authState.authToken,
+  user: state.authState.user
 });
 
-export default connect(mapStateToProps)(ApplyCollaborate);
+export default connect(
+  mapStateToProps,
+  {
+    apiLoading,
+    apiSuccess,
+    apiError,
+    setAlert
+  }
+)(ApplyCollaborate);

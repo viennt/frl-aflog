@@ -67,6 +67,7 @@ const LoginModal = ({
   const handleSubmit = e => {
     e.preventDefault();
     loginDispatcher(formState.values.email, formState.values.password);
+    onClose(true);
   }
 
   return (
