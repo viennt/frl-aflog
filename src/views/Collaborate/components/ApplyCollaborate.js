@@ -83,7 +83,7 @@ const useStyles = makeStyles(theme => ({
     },
     '& span': {
       fontSize: '14px',
-      padding: theme.spacing(1, 4),
+      padding: theme.spacing(0.5, 4),
       color: theme.palette.common.white,
       backgroundColor: theme.palette.common.black,
     }
@@ -269,10 +269,10 @@ const ApplyCollaborate = ({ loggedIn }) => {
             >
               <div className={classes.upload}>
                 <ImagePicker
-                  dims={{minWidth: 100, maxWidth: 500, minHeight: 100, maxHeight: 500}}
+                  dims={{minWidth: 100, minHeight: 100}}
                   extensions={['jpg', 'jpeg', 'png']}
-                  onChange={base64 => {}}
-                  onError={errMsg => {}}
+                  onChange={base64 => {console.log(base64)}}
+                  onError={errMsg => {console.log(errMsg)}}
                 >
                   <div>Click to upload image</div>
                 </ImagePicker>

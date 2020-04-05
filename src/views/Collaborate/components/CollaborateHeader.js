@@ -1,12 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 
 const useStyles = makeStyles(theme => ({
   roots: {
     backgroundColor: theme.palette.common.black,
-    paddingTop: theme.spacing(6),
-    paddingBottom: theme.spacing(6),
+    padding: theme.spacing(6, 2, 6, 2),
   },
   header: {
     fontSize: '42px',
@@ -49,6 +49,20 @@ const CollaborateHeader = () => {
           md={8}
           xs={12}
         >
+          <Hidden smUp>
+            <Grid
+              container
+              item
+              sm={5}
+            >
+              <img
+                alt={'/images/collaborate-header.png'}
+                className={classes.image}
+                src={'/images/collaborate-header.png'}
+              />
+            </Grid>
+          </Hidden>
+
           <Grid
             container
             direction="column"
@@ -62,19 +76,21 @@ const CollaborateHeader = () => {
 favourite brands and engage in brand campaigns! </div>
             <button className={classes.applyButton}>Apply now!</button>
           </Grid>
-          <Grid
-            container
-            item
-            justify="center"
-            sm={5}
-            xs={12}
-          >
-            <img
-              alt={'/images/collaborate-header.png'}
-              className={classes.image}
-              src={'/images/collaborate-header.png'}
-            />
-          </Grid>
+
+          <Hidden xsDown>
+            <Grid
+              container
+              item
+              justify="center"
+              sm={5}
+            >
+              <img
+                alt={'/images/collaborate-header.png'}
+                className={classes.image}
+                src={'/images/collaborate-header.png'}
+              />
+            </Grid>
+          </Hidden>
         </Grid>
       </Grid>
     </div>

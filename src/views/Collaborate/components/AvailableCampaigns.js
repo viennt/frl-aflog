@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
+
 import { apiLoading, apiSuccess, apiError } from '../../../redux/actions/app';
 import { setAlert } from '../../../redux/actions/alert';
 import { rootURL } from '../../../utils/constants/apiUrl';
 import { CampaignCard } from '../../../components';
-import { connect } from 'react-redux';
-import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   roots: {
@@ -39,24 +40,24 @@ const AvailableCampaigns = ({
     try {
       apiLoadingDispatcher();
       const res = await
-        axios.get(`${rootURL}/collaborate/get-hype-campaigns`,
-          {
-            headers: {
-              'Authorization': `Bearer ${authToken}`
-            }
+      axios.get(`${rootURL}/collaborate/get-hype-campaigns`,
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
           }
-        );
+        }
+      );
       if (res.data) {
         setCampaigns(res.data);
         apiSuccessDispatcher();
       }
-  
+
     } catch (err) {
       setAlertDispatcher(err.message, 'danger');
       apiErrorDispatcher();
     }
   };
-  
+
   useEffect(() => {
     getHypeCampaign(authToken);
   }, [load]);
