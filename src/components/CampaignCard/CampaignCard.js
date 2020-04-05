@@ -48,7 +48,6 @@ const CampaignCard = ({
   },
 }) => {
   const classes = useStyles();
-
   return (
     <div
       className={classes.root}
@@ -71,7 +70,7 @@ const CampaignCard = ({
             src={brandImage}
           />
           <div className={classes.name}>{name}</div>
-          <div className={classes.applyBefore}>Apply before {applyBefore.substring(0, 10)} - {slotLeft} slots left</div>
+          <div className={classes.applyBefore}>{applyBefore && 'Apply before' + applyBefore.substring(0, 10) + '-'} {slotLeft} slots left</div>
         </Grid>
       </div>
     </div>

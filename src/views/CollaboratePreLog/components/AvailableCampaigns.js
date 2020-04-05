@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
-
+import { apiLoading, apiSuccess, apiError } from '../../../redux/actions/app';
+import { setAlert } from '../../../redux/actions/alert';
+import { rootURL } from '../../../utils/constants/apiUrl';
 import { CampaignCard } from '../../../components';
+import { connect } from 'react-redux';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   roots: {
@@ -20,41 +24,45 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AvailableCampaigns = () => {
+const AvailableCampaigns = ({
+  authToken,
+  error,
+  hasMore,
+  isApiLoading,
+  setAlert: setAlertDispatcher,
+  apiLoading: apiLoadingDispatcher,
+  apiSuccess: apiSuccessDispatcher,
+  apiError: apiErrorDispatcher
+}) => {
   const classes = useStyles();
+  const [campaigns, setCampaigns] = useState([]);
+  const load = 1;
 
-  const campaigns = [
-    {
-      'id': 373,
-      'name': 'Name test',
-      'image': 'https://images.befunky.com/wp/wp-2016-03-blur-background-featured-1.jpg?auto=format&fm=jpg&q=75&w=880&ixlib=js-1.4.1',
-      'apply_before': '2020-03-12 00:12:00',
-      'brand': {
-        'id': 83,
-        'image': 'https://cdn.shopify.com/shopifycloud/hatchful-web/assets/6fcc76cfd1c59f44d43a485167fb3139.png',
-      },
-    },
-    {
-      'id': 373,
-      'name': 'Name test',
-      'image': 'https://images.befunky.com/wp/wp-2016-03-blur-background-featured-1.jpg?auto=format&fm=jpg&q=75&w=880&ixlib=js-1.4.1',
-      'apply_before': '2020-03-12 00:12:00',
-      'brand': {
-        'id': 83,
-        'image': 'https://cdn.shopify.com/shopifycloud/hatchful-web/assets/6fcc76cfd1c59f44d43a485167fb3139.png',
-      },
-    },
-    {
-      'id': 373,
-      'name': 'Name test',
-      'image': 'https://images.befunky.com/wp/wp-2016-03-blur-background-featured-1.jpg?auto=format&fm=jpg&q=75&w=880&ixlib=js-1.4.1',
-      'apply_before': '2020-03-12 00:12:00',
-      'brand': {
-        'id': 83,
-        'image': 'https://cdn.shopify.com/shopifycloud/hatchful-web/assets/6fcc76cfd1c59f44d43a485167fb3139.png',
-      },
-    },
-  ]
+  const getHypeCampaign = async (authToken) => {
+    try {
+      apiLoadingDispatcher();
+      const res = await
+        axios.get(`${rootURL}/collaborate/get-hype-campaigns`,
+          {
+            headers: {
+              'Authorization': `Bearer ${authToken}`
+            }
+          }
+        );
+      if (res.data) {
+        setCampaigns(res.data);
+        apiSuccessDispatcher();
+      }
+  
+    } catch (err) {
+      setAlertDispatcher(err.message, 'danger');
+      apiErrorDispatcher();
+    }
+  };
+  
+  useEffect(() => {
+    getHypeCampaign(authToken);
+  }, [load]);
 
   return (
     <div className={classes.roots} >
@@ -92,4 +100,19 @@ const AvailableCampaigns = () => {
   )
 };
 
-export default AvailableCampaigns;
+const mapStateToProps = state => ({
+  error: state.aflogState.error,
+  hasMore: state.aflogState.hasMore,
+  isApiLoading: state.appState.apiLoading,
+  authToken: state.authState.authToken
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    apiLoading,
+    apiSuccess,
+    apiError,
+    setAlert
+  }
+)(AvailableCampaigns);
