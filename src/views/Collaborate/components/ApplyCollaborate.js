@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { ImagePicker } from 'react-file-picker';
 import { connect } from 'react-redux';
 import validate from 'validate.js';
+import axios from 'axios';
+
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { ImagePicker } from 'react-file-picker';
+
 import { apiLoading, apiSuccess, apiError } from '../../../redux/actions/app';
 import { applyCollaborate } from '../../../redux/actions/auth';
 import { setAlert } from '../../../redux/actions/alert';
 import { rootURL } from '../../../utils/constants/apiUrl';
-import axios from 'axios';
 import LoginModal from '../../../layouts/components/Topbar/LoginModal';
+import InstagramModal from './InstagramModal';
 
 const schema = {
   phoneNumber: {
@@ -163,6 +166,7 @@ const ApplyCollaborate = ({
   const classes = useStyles();
 
   const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [openInstagramModal, setOpenInstagramModal] = useState(true);
   const [formState, setFormState] = useState({
     isValid: false,
     values: {},
@@ -187,6 +191,14 @@ const ApplyCollaborate = ({
 
   const handleLoginModalClose = () => {
     setOpenLoginModal(false);
+  };
+
+  const handleInstagramModalOpen = () => {
+    setOpenInstagramModal(true);
+  };
+
+  const handleInstagramModalClose = () => {
+    setOpenInstagramModal(false);
   };
 
   const handleChange = event => {
@@ -349,7 +361,10 @@ const ApplyCollaborate = ({
               <>
               <div className={classes.uploadTips}>
                 <span>Upload Your Instagram Profile Insights</span>{' '}
-                <span className={classes.uploadTipsHow}>How?</span>
+                <span
+                  className={classes.uploadTipsHow}
+                  onClick={handleInstagramModalOpen}
+                >How?</span>
               </div>
               <div className={classes.upload}>
                 <ImagePicker
@@ -393,6 +408,10 @@ const ApplyCollaborate = ({
           </Grid>
         </Grid>
       </form>
+      <InstagramModal
+        onClose={handleInstagramModalClose}
+        open={openInstagramModal}
+      />
     </>
   )
 

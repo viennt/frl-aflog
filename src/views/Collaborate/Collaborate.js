@@ -14,21 +14,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Collaborate = ({loggedIn}) => {
+const Collaborate = ({loggedIn, requestToken}) => {
   const classes = useStyles();
-  const appliedCollaborate = false;
+  const appliedCollaborate = !!requestToken;
 
   return (
     <div className={classes.root}>
       <BackToTopButton />
       {
-        !appliedCollaborate ? (
+        appliedCollaborate ? (
+          null
+        ) : (
           <>
             <CollaborateHeader />
             <AvailableCampaigns />
             <ApplyCollaborate />
           </>
-        ) : null
+        )
       }
     </div>
   );
@@ -36,6 +38,7 @@ const Collaborate = ({loggedIn}) => {
 
 const mapStateToProps = state => ({
   loggedIn: state.authState.loggedIn,
+  requestToken: state.authState.requestToken,
 });
 
 export default connect(mapStateToProps)(Collaborate);
