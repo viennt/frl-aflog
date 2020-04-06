@@ -3,17 +3,21 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
-  APPLY_COLLABORATE_SUCCESS
+  APPLY_COLLABORATE_SUCCESS,
+  APPLY_CHECK_SUCCESS
 } from '../actions/index';
 
 let user = JSON.parse(localStorage.getItem('user'));
 let authToken = localStorage.getItem('auth_token');
 let requestToken = localStorage.getItem('request_token');
+let appToken = localStorage.getItem('app_token');
+
 const initialState = {
   loggedIn: authToken ? true : false,
   authToken: authToken ? authToken : null,
   user: user ? user : {},
-  requestToken: requestToken ? requestToken : null
+  requestToken: requestToken ? requestToken : null,
+  appToken: appToken ? appToken : null
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -35,19 +39,26 @@ export default (state = initialState, { type, payload }) => {
         loggedIn: false,
         authToken: null,
         user: {},
-        requestToken: false
+        requestToken: null,
+        appToken: null
       };
     case LOGOUT:
       return {
         loggedIn: false,
         authToken: null,
         user: {},
-        requestToken: false
+        requestToken: null,
+        appToken: null
       };
     case APPLY_COLLABORATE_SUCCESS:
       return {
         ...state,
         requestToken: payload
+      }
+    case APPLY_CHECK_SUCCESS:
+      return {
+        ...state,
+        appToken: payload
       }
     default:
       return state;

@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CampaignTypeTags = ({ setType, setPage, clear, selected }) => {
+const CampaignTypeTags = ({ setCampaigns, setType, setPage, clear, selected }) => {
   const classes = useStyles();
 
   return (
@@ -51,6 +51,7 @@ const CampaignTypeTags = ({ setType, setPage, clear, selected }) => {
           })}
           component="p"
           onClick={() => {
+            setCampaigns([]);
             setType('TYPE_ELIGIBLE');
             setPage(1);
             clear();
@@ -65,6 +66,7 @@ const CampaignTypeTags = ({ setType, setPage, clear, selected }) => {
           })}
           component="p"
           onClick={() => {
+            setCampaigns([]);
             setType('TYPE_ONGOING');
             setPage(1);
             clear();
@@ -79,6 +81,7 @@ const CampaignTypeTags = ({ setType, setPage, clear, selected }) => {
           })}
           component="p"
           onClick={() => {
+            setCampaigns([]);
             setType('TYPE_PENDING');
             setPage(1);
             clear();
@@ -93,6 +96,7 @@ const CampaignTypeTags = ({ setType, setPage, clear, selected }) => {
           })}
           component="p"
           onClick={() => {
+            setCampaigns([]);
             setType('TYPE_FINISHED');
             setPage(1);
             clear();
