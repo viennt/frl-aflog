@@ -5,9 +5,18 @@ import history from '../../utils/historyRoute';
 import {
   LOGOUT,
   LOGIN_SUCCESS,
-  LOGIN_FAILURE
+  LOGIN_FAILURE,
+  APPLY_COLLABORATE_SUCCESS
 } from './index';
 import { setAlert } from './alert';
+
+export const applyCollaborate = (requestToken) => dispatch => {
+  localStorage.setItem('request_token', requestToken);
+  dispatch({
+    type: APPLY_COLLABORATE_SUCCESS,
+    payload: requestToken
+  });
+}
 
 export const login = (username, password) => async dispatch => {
   try {
@@ -21,6 +30,7 @@ export const login = (username, password) => async dispatch => {
     if (res.data) {
       localStorage.setItem('auth_token', res.data.auth_token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
+      localStorage.setItem('request_token', res.data.request_token);
       dispatch({ 
         type: LOGIN_SUCCESS,
         payload: res.data
@@ -48,6 +58,7 @@ export const logout = (token) => async dispatch => {
     if (res.data) {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user');
+      localStorage.removeItem('request_token');
       dispatch({ type: LOGOUT });
       dispatch(apiSuccess());
       history.push('/Home');

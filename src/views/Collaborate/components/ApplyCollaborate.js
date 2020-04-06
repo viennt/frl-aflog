@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { ImagePicker } from 'react-file-picker';
 import { apiLoading, apiSuccess, apiError } from '../../../redux/actions/app';
+import { applyCollaborate } from '../../../redux/actions/auth';
 import { setAlert } from '../../../redux/actions/alert';
 import { rootURL } from '../../../utils/constants/apiUrl';
 import axios from 'axios';
@@ -156,7 +157,8 @@ const ApplyCollaborate = ({
   setAlert: setAlertDispatcher,
   apiLoading: apiLoadingDispatcher,
   apiSuccess: apiSuccessDispatcher,
-  apiError: apiErrorDispatcher
+  apiError: apiErrorDispatcher,
+  applyCollaborate: applyCollaborateDispatcher
 }) => {
   const classes = useStyles();
 
@@ -219,6 +221,7 @@ const ApplyCollaborate = ({
         }
       );
       if (res.data) {
+        applyCollaborateDispatcher(res.data.request_token);
         apiSuccessDispatcher();
       }
 
@@ -235,7 +238,7 @@ const ApplyCollaborate = ({
     formData.append('ig_handle', formState.values.instagramUsername);
     formData.append('phone_number', formState.values.phoneNumber);
     formData.append('location', formState.values.location);
-    formData.append('email', 'user.email');
+    formData.append('email', user.email);
     formData.append('name', user.name);
     formData.append('profile_image', user.image);
     formData.append('act_user_id', user.id);
@@ -411,12 +414,13 @@ const mapStateToProps = state => ({
   hasMore: state.aflogState.hasMore,
   isApiLoading: state.appState.apiLoading,
   authToken: state.authState.authToken,
-  user: state.authState.user
+  user: state.authState.user,
 });
 
 export default connect(
   mapStateToProps,
   {
+    applyCollaborate,
     apiLoading,
     apiSuccess,
     apiError,
