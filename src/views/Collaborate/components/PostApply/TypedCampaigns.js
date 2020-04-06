@@ -81,10 +81,10 @@ const TypedCampaigns = ({
 
   useEffect(() => {
     // FIXME
-    if (type != 'TYPE_ELIGIBLE') {
+    if (type != 'TYPE_ELIGIBLE' && appToken != undefined) {
       getCampaignByType(appToken, type);
     }
-  }, [type]);
+  }, [type, appToken]);
 
   return (
     <div className={classes.roots} >
