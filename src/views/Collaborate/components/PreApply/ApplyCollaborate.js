@@ -166,7 +166,7 @@ const ApplyCollaborate = ({
   const classes = useStyles();
 
   const [openLoginModal, setOpenLoginModal] = useState(false);
-  const [openInstagramModal, setOpenInstagramModal] = useState(true);
+  const [openInstagramModal, setOpenInstagramModal] = useState(false);
   const [formState, setFormState] = useState({
     isValid: false,
     values: {},

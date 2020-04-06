@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Collaborate = ({loggedIn, requestToken}) => {
+const Collaborate = ({ requestToken }) => {
   const classes = useStyles();
   const appliedCollaborate = !!requestToken;
 

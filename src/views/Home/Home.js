@@ -1,14 +1,19 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { makeStyles } from '@material-ui/styles';
-import { connect } from 'react-redux';
-import { CircularProgress, Typography, Grid, Button, Modal } from '@material-ui/core';
-import { AflogCategoryTags } from '../../components';
-import { AflogCard } from '../../components';
-import { getAllAflogs, setCategory, getAflogsByCategory, clearAflog } from '../../redux/actions/aflog';
-import { AflogCarousal, AflogCardSwap, AflogModal } from '../../components';
-import Masonry from 'react-masonry-css';
-import { carouselSlidesData } from '../../utils/';
+import React, { useState, useEffect } from 'react';
 import debounce from 'lodash.debounce';
+import Masonry from 'react-masonry-css';
+import { connect } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
+import { CircularProgress, Grid } from '@material-ui/core';
+
+import {
+  AflogCard,
+  AflogCategoryTags,
+  AflogCarousal,
+  AflogCardSwap,
+  AflogModal
+} from '../../components';
+import { carouselSlidesData } from '../../utils/';
+import { getAllAflogs, getAflogsByCategory, clearAflog } from '../../redux/actions/aflog';
 import BackToTopButton from '../components/BackToTopButton';
 
 const useStyles = makeStyles(theme => ({

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Masonry from 'react-masonry-css';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
@@ -12,8 +13,7 @@ import { CampaignCard, CampaignTypeTags } from '../../../../components';
 const useStyles = makeStyles(theme => ({
   roots: {
     backgroundColor: theme.palette.common.white,
-    padding: theme.spacing(4, 2, 8, 2),
-    minHeight: '100vh'
+    padding: theme.spacing(0, 2, 15, 2),
   },
   header: {
     textAlign: 'right',
@@ -22,7 +22,17 @@ const useStyles = makeStyles(theme => ({
     color: '#00000011',
     textTransform: 'uppercase',
     padding: theme.spacing(1),
-  }
+  },
+  flexMasonry: {
+    display: '-webkit-box',
+    display: '-ms-flexbox',
+    display: 'flex',
+    width: 'auto',
+    minHeight : 400
+  },
+  flexMasonryColumn: {
+    backgroundClip: 'padding-box'
+  },
 }));
 
 const TypedCampaigns = ({
@@ -69,7 +79,7 @@ const TypedCampaigns = ({
 
   return (
     <div className={classes.roots} >
-      <div className={classes.header}>ongoing</div>
+      <div className={classes.header}>{type.substring(5, type.length)}</div>
       <CampaignTypeTags
         clear={() => {}}
         selected={type}
@@ -77,21 +87,22 @@ const TypedCampaigns = ({
         setType={setType}
       />
 
-      <Grid
-        container
-        justify="center"
+      <Masonry
+        breakpointCols={{
+          default: 3,
+          1100: 3,
+          700: 1,
+          500: 1
+        }}
+        className={classes.flexMasonry}
+        columnClassName={classes.flexMasonryColumn}
       >
         {
           campaigns.map((campaign, index) => (
             <Grid
-              container
-              direction="column"
               item
-              justify="center"
               key={index}
               onClick={() => {}}
-              sm={4}
-              xs={12}
             >
               <CampaignCard
                 campaign={{
@@ -105,7 +116,7 @@ const TypedCampaigns = ({
             </Grid>
           ))
         }
-      </Grid>
+      </Masonry>
     </div>
   )
 };
