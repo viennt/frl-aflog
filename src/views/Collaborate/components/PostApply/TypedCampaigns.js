@@ -4,25 +4,28 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 
-import { apiLoading, apiSuccess, apiError } from '../../../redux/actions/app';
-import { setAlert } from '../../../redux/actions/alert';
-import { rootURL } from '../../../utils/constants/apiUrl';
-import { CampaignCard } from '../../../components';
+import { apiLoading, apiSuccess, apiError } from '../../../../redux/actions/app';
+import { setAlert } from '../../../../redux/actions/alert';
+import { rootURL } from '../../../../utils/constants/apiUrl';
+import { CampaignCard, CampaignTypeTags } from '../../../../components';
 
 const useStyles = makeStyles(theme => ({
   roots: {
     backgroundColor: theme.palette.common.white,
-    padding: theme.spacing(4, 2, 2, 2),
+    padding: theme.spacing(4, 2, 8, 2),
+    minHeight: '100vh'
   },
   header: {
-    textAlign: 'center',
-    fontSize: '24px',
+    textAlign: 'right',
+    fontSize: theme.spacing(15),
     fontWeight: 900,
+    color: '#00000011',
+    textTransform: 'uppercase',
     padding: theme.spacing(1),
   }
 }));
 
-const AvailableCampaigns = ({
+const TypedCampaigns = ({
   authToken,
   error,
   hasMore,
@@ -64,7 +67,14 @@ const AvailableCampaigns = ({
 
   return (
     <div className={classes.roots} >
-      <div className={classes.header}>Some campaigns that are currently available</div>
+      <div className={classes.header}>ongoing</div>
+      <CampaignTypeTags
+        clear={() => {}}
+        selected={'TYPE_ONGOING'}
+        setPage={() => {}}
+        setType={() => {}}
+      />
+
       <Grid
         container
         justify="center"
@@ -113,4 +123,4 @@ export default connect(
     apiError,
     setAlert
   }
-)(AvailableCampaigns);
+)(TypedCampaigns);

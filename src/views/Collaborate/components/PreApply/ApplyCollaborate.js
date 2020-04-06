@@ -8,11 +8,11 @@ import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
-import { apiLoading, apiSuccess, apiError } from '../../../redux/actions/app';
-import { applyCollaborate } from '../../../redux/actions/auth';
-import { setAlert } from '../../../redux/actions/alert';
-import { rootURL } from '../../../utils/constants/apiUrl';
-import LoginModal from '../../../layouts/components/Topbar/LoginModal';
+import { apiLoading, apiSuccess, apiError } from '../../../../redux/actions/app';
+import { applyCollaborate } from '../../../../redux/actions/auth';
+import { setAlert } from '../../../../redux/actions/alert';
+import { rootURL } from '../../../../utils/constants/apiUrl';
+import LoginModal from '../../../../layouts/components/Topbar/LoginModal';
 import InstagramModal from './InstagramModal';
 
 const schema = {

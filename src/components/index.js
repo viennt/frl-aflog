@@ -10,3 +10,4 @@ export { default as AflogCardSwap } from './AflogCardSwap';
 export { default as AflogDetail } from './AflogDetail';
 
 export { default as CampaignCard } from './CampaignCard';
+export { default as CampaignTypeTags } from './CampaignTypeTags';

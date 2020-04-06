@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
   roots: {
     position: 'absolute',
     width: theme.spacing(50),
+    maxWidth: '80vw',
     backgroundColor: theme.palette.background.paper,
     border: '1px solid',
     borderColor: theme.palette.text.secondary,

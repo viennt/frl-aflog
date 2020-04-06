@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 
 import BackToTopButton from '../components/BackToTopButton';
-import { CollaborateHeader, AvailableCampaigns, ApplyCollaborate } from './components';
+import {
+  CollaborateHeader,
+  AvailableCampaigns,
+  ApplyCollaborate,
+  TypedCampaigns
+} from './components';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +28,7 @@ const Collaborate = ({loggedIn, requestToken}) => {
       <BackToTopButton />
       {
         appliedCollaborate ? (
-          null
+          <TypedCampaigns />
         ) : (
           <>
             <CollaborateHeader />
