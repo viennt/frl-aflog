@@ -36,6 +36,8 @@ const TypedCampaigns = ({
   apiError: apiErrorDispatcher
 }) => {
   const classes = useStyles();
+  const [type, setType] = useState('TYPE_ONGOING');
+  const [page, setPage] = useState(1);
   const [campaigns, setCampaigns] = useState([]);
   const load = 1;
 
@@ -70,9 +72,9 @@ const TypedCampaigns = ({
       <div className={classes.header}>ongoing</div>
       <CampaignTypeTags
         clear={() => {}}
-        selected={'TYPE_ONGOING'}
-        setPage={() => {}}
-        setType={() => {}}
+        selected={type}
+        setPage={setPage}
+        setType={setType}
       />
 
       <Grid
