@@ -3,7 +3,7 @@ import axios from 'axios';
 import Masonry from 'react-masonry-css';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { Grid } from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 
 import { apiLoading, apiSuccess, apiError } from '../../../../redux/actions/app';
 import { setAlert } from '../../../../redux/actions/alert';
@@ -33,6 +33,9 @@ const useStyles = makeStyles(theme => ({
   flexMasonryColumn: {
     backgroundClip: 'padding-box'
   },
+  loader: {
+    textAlign: 'center'
+  }
 }));
 
 const TypedCampaigns = ({
@@ -40,6 +43,7 @@ const TypedCampaigns = ({
   error,
   hasMore,
   isApiLoading,
+  appToken,
   setAlert: setAlertDispatcher,
   apiLoading: apiLoadingDispatcher,
   apiSuccess: apiSuccessDispatcher,
@@ -49,16 +53,18 @@ const TypedCampaigns = ({
   const [type, setType] = useState('TYPE_ONGOING');
   const [page, setPage] = useState(1);
   const [campaigns, setCampaigns] = useState([]);
-  const load = 1;
 
-  const getHypeCampaign = async (authToken) => {
+  const getCampaignByType = async (appToken, type) => {
     try {
       apiLoadingDispatcher();
       const res = await
-      axios.get(`${rootURL}/collaborate/get-hype-campaigns`,
+      axios.post(`${rootURL}/collaborate-app/campaign/get-campaign-by-type`,
+        {
+          type: type
+        },
         {
           headers: {
-            'Authorization': `Bearer ${authToken}`
+            'Authorization': `Bearer ${appToken}`
           }
         }
       );
@@ -74,8 +80,11 @@ const TypedCampaigns = ({
   };
 
   useEffect(() => {
-    getHypeCampaign(authToken);
-  }, [load]);
+    // FIXME
+    if (type != 'TYPE_ELIGIBLE') {
+      getCampaignByType(appToken, type);
+    }
+  }, [type]);
 
   return (
     <div className={classes.roots} >
@@ -83,10 +92,13 @@ const TypedCampaigns = ({
       <CampaignTypeTags
         clear={() => {}}
         selected={type}
+        setCampaigns={setCampaigns}
         setPage={setPage}
         setType={setType}
       />
-
+      {isApiLoading &&
+        <div className={classes.loader}><CircularProgress /></div>
+      }
       <Masonry
         breakpointCols={{
           default: 3,
@@ -125,7 +137,8 @@ const mapStateToProps = state => ({
   error: state.aflogState.error,
   hasMore: state.aflogState.hasMore,
   isApiLoading: state.appState.apiLoading,
-  authToken: state.authState.authToken
+  authToken: state.authState.authToken,
+  appToken: state.authState.appToken
 });
 
 export default connect(
