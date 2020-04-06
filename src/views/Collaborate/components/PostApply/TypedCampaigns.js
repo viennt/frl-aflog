@@ -8,7 +8,12 @@ import { Grid, CircularProgress } from '@material-ui/core';
 import { apiLoading, apiSuccess, apiError } from '../../../../redux/actions/app';
 import { setAlert } from '../../../../redux/actions/alert';
 import { rootURL } from '../../../../utils/constants/apiUrl';
-import { CampaignCard, CampaignTypeTags } from '../../../../components';
+import {
+  CampaignCard,
+  CampaignTypeTags,
+  CampaignModal,
+  CampainDetail
+} from '../../../../components';
 
 const useStyles = makeStyles(theme => ({
   roots: {
@@ -53,6 +58,16 @@ const TypedCampaigns = ({
   const [type, setType] = useState('TYPE_ONGOING');
   const [page, setPage] = useState(1);
   const [campaigns, setCampaigns] = useState([]);
+  const [campaign, setCampaign] = useState();
+  const [openCampaignModal, setOpenCampaignModal] = useState(false);
+
+  const handleCampaignModalOpen = () => {
+    setOpenCampaignModal(true);
+  };
+
+  const handleCampaignModalClose = () => {
+    setOpenCampaignModal(false);
+  };
 
   const getCampaignByType = async (appToken, type) => {
     try {
@@ -114,7 +129,7 @@ const TypedCampaigns = ({
             <Grid
               item
               key={index}
-              onClick={() => {}}
+              onClick={() => {setCampaign(campaign); handleCampaignModalOpen()}}
             >
               <CampaignCard
                 campaign={{
@@ -129,6 +144,26 @@ const TypedCampaigns = ({
           ))
         }
       </Masonry>
+      <CampaignModal
+        onClose={handleCampaignModalClose}
+        open={openCampaignModal}
+      >
+        {campaign && (
+          <CampainDetail
+            campaign={{
+              backgroundImage: campaign.image,
+              brandImage: campaign.brand.image,
+              name: campaign.name,
+              applyBefore: campaign.apply_before,
+              slotLeft: 4,
+              aboutTheBrand: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
+              aboutTheCampaign: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
+              shootDetail: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
+              tasks: [],
+            }}
+          />
+        )}
+      </CampaignModal>
     </div>
   )
 };

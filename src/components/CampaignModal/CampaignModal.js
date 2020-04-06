@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles(theme => ({
@@ -9,10 +8,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    overflow: 'scroll',
-    '& .MuiBackdrop-root':{
-      backgroundColor: 'rgba(0, 0, 0, 0.9)',
-    }
+    '& *:not(i)': {
+      fontFamily: 'Muli, sans-serif !important'
+    },
   },
   paper: {
     backgroundColor: 'transparent',
@@ -21,29 +19,18 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '80vh',
     height: '80vh'
   },
-
 }));
 
-export default function AflogModal({
-  open,
-  handleClose,
-  handleOpen,
-  children
-}) {
+const CampaignModal = ({ open, onClose, children }) => {
   const classes = useStyles();
 
   return (
     <div>
       <Modal
-        aria-describedby="transition-modal-description"
-        aria-labelledby="transition-modal-title"
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+        aria-describedby="simple-modal-description"
+        aria-labelledby="simple-modal-title"
         className={classes.modal}
-        closeAfterTransition
-        onClose={handleClose}
+        onClose={onClose}
         open={open}
       >
         <Fade in={open}>
@@ -55,3 +42,5 @@ export default function AflogModal({
     </div>
   );
 }
+
+export default CampaignModal;
