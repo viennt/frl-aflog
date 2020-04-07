@@ -26,9 +26,24 @@ const useStyles = makeStyles(theme => ({
   campaignHeader: {
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
-    display: 'flex',
     alignItems: 'center',
+    textAlign: 'center',
     backgroundColor: '#ffffff'
+  },
+  brandImage: {
+    margin: 'auto',
+    width: theme.spacing(10),
+    height: theme.spacing(10)
+  },
+  campaignTitle: {
+    fontSize: '24px',
+    fontWeight: 700,
+    margin: theme.spacing(1, 0),
+  },
+  brandName: {
+    fontSize: '18px',
+    margin: theme.spacing(1, 0),
+    color: '#999999'
   },
   applyButton: {
     fontSize: '14px',
@@ -46,9 +61,10 @@ const useStyles = makeStyles(theme => ({
 
 export default function AflogDetail({
   campaign: {
+    name,
     backgroundImage,
     brandImage,
-    name,
+    brandName,
     applyBefore,
     slotLeft,
     aboutTheBrand,
@@ -71,17 +87,16 @@ export default function AflogDetail({
           <div className={classes.campaignHeader}>
             <Avatar
               alt={brandImage}
-              className={classes.avatar}
+              className={classes.brandImage}
               src={brandImage}
               type="button"
             />
 
-            <div className="pl3">
-              <Typography
-                component="p"
-              >
-                {name}
-              </Typography>
+            <div className={classes.campaignTitle}>
+              {name}
+            </div>
+            <div className={classes.brandName}>
+              By {brandName}
             </div>
           </div>
         </CardContent>

@@ -12,7 +12,8 @@ import {
   CampaignCard,
   CampaignTypeTags,
   CampaignModal,
-  CampainDetail
+  CampainDetail,
+  CampaignChatBox
 } from '../../../../components';
 
 const useStyles = makeStyles(theme => ({
@@ -148,22 +149,24 @@ const TypedCampaigns = ({
         onClose={handleCampaignModalClose}
         open={openCampaignModal}
       >
-        {campaign && (
-          <CampainDetail
-            campaign={{
-              backgroundImage: campaign.image,
-              brandImage: campaign.brand.image,
-              name: campaign.name,
-              applyBefore: campaign.apply_before,
-              slotLeft: 4,
-              aboutTheBrand: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-              aboutTheCampaign: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-              shootDetail: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-              tasks: [],
-            }}
-          />
-        )}
+        {/* {campaign && ( */}
+        <CampainDetail
+          campaign={{
+            name: 'Vien Test',
+            brandName: 'Peach',
+            backgroundImage: 'https://img.freepik.com/free-photo/blurred-tropical-forest-background_23-2147904702.jpg?size=626&ext=jpg',
+            brandImage: 'https://cdn2.f-cdn.com/contestentries/1371237/27733270/5b4b2ef756fc8_thumb900.jpg',
+            applyBefore: 'campaign.apply_before',
+            slotLeft: 4,
+            aboutTheBrand: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
+            aboutTheCampaign: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
+            shootDetail: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
+            tasks: [],
+          }}
+        />
+        {/* )} */}
       </CampaignModal>
+      <CampaignChatBox/>
     </div>
   )
 };

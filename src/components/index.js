@@ -13,3 +13,4 @@ export { default as CampaignCard } from './CampaignCard';
 export { default as CampaignTypeTags } from './CampaignTypeTags';
 export { default as CampaignModal } from './CampaignModal';
 export { default as CampainDetail } from './CampaignDetail';
+export { default as CampaignChatBox } from './CampaignChatBox';
