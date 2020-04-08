@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
-import io from "socket.io-client";
+import io from 'socket.io-client';
 import { chatSockerURL } from '../../utils/constants/apiUrl';
 
 const useStyles = makeStyles(theme => ({
@@ -59,7 +59,8 @@ const useStyles = makeStyles(theme => ({
       marginBottom: theme.spacing(1),
       position: 'relative',
       fontSize: '20px',
-      fontWeight: 900
+      fontWeight: 900,
+      cursor: 'pointer'
     },
   },
   messages: {
@@ -115,6 +116,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: '#FFFFFF',
       border: '1px solid #EEEEEE',
       padding: theme.spacing(1.5),
+      cursor: 'pointer'
     }
   },
   messageLeftAction: {
@@ -200,10 +202,10 @@ const LeftMessageAction = ({ message, createAt, buttons }) => {
     <li className={classes.messageLeft}>
       <div className={classes.messageLeftAvatar} />
       <div className={classes.messageLeftTextWrapper}>
-        <div className={classes.messageLeftText}
+        <div
+          className={classes.messageLeftText}
           dangerouslySetInnerHTML={{ __html: message }}
-        >
-        </div>
+        />
         <div className={classes.messageLeftActions}>
           {buttons.map((item, index) => {
             return(<div className={classes.messageLeftAction}>{item.text}</div>);
@@ -220,10 +222,10 @@ const LeftMessage = ({ message, createAt }) => {
     <li className={classes.messageLeft}>
       <div className={classes.messageLeftAvatar} />
       <div className={classes.messageLeftTextWrapper}>
-        <div className={classes.messageLeftText}
+        <div
+          className={classes.messageLeftText}
           dangerouslySetInnerHTML={{ __html: message }}
-        >
-        </div>
+        />
       </div>
     </li>
   );
@@ -234,16 +236,24 @@ const RightMessage = ({ message, createAt }) => {
   return (
     <li className={classes.messageRight}>
       <div className={classes.messageRightTextWrapper}>
-        <div className={classes.messageRightText}
+        <div
+          className={classes.messageRightText}
           dangerouslySetInnerHTML={{ __html: message }}
-        >
-        </div>
+        />
       </div>
     </li>
   );
 }
 
-const CampaignChatBox = ({ campaignAvatar, campaignName, campaignId, userId }) => {
+const CampaignChatBox = ({
+  campaign: {
+    campaignAvatar, campaignName, campaignId
+  },
+  user: {
+    userId
+  },
+  onClose
+}) => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [messages, setMessages] = useState([
     {
@@ -258,7 +268,7 @@ const CampaignChatBox = ({ campaignAvatar, campaignName, campaignId, userId }) =
     },
     {
       type: 'text_with_buttons',
-      message: `Hope you had a good time at the shoot! Please submit your content for review here before posting on Instagram.`,
+      message: 'Hope you had a good time at the shoot! Please submit your content for review here before posting on Instagram.',
       created_at: '1586316637',
       content_id: 10,
       revision_number: 1,
@@ -379,7 +389,7 @@ const CampaignChatBox = ({ campaignAvatar, campaignName, campaignId, userId }) =
         <div className={classes.headerTitle}>{campaignName}</div>
         <div className={classes.headerButtons}>
           <div>_</div>
-          <div>X</div>
+          <div onClick={onClose}>X</div>
         </div>
       </div>
       <ul className={classes.messages}>
@@ -387,8 +397,8 @@ const CampaignChatBox = ({ campaignAvatar, campaignName, campaignId, userId }) =
           if (item.type == 'text' && item.is_outbox) {
             return (
               <RightMessage
-                message={item.message}
                 createAt={item.created_at}
+                message={item.message}
               />
             )
           }
@@ -396,21 +406,21 @@ const CampaignChatBox = ({ campaignAvatar, campaignName, campaignId, userId }) =
             if (item.type == 'text') {
               return (
                 <LeftMessage
-                  message={item.message}
                   createAt={item.created_at}
+                  message={item.message}
                 />
               )
             }
             if (item.type == 'text_with_buttons') {
               return (
                 <LeftMessageAction
-                  message={item.message}
-                  createAt={item.created_at}
                   buttons={item.button_data}
+                  createAt={item.created_at}
+                  message={item.message}
                 />
               )
             }
-            
+
           }
         })}
       </ul>
@@ -418,9 +428,9 @@ const CampaignChatBox = ({ campaignAvatar, campaignName, campaignId, userId }) =
         <div className={classes.inputWrapper}>
           <input
             className={classes.input}
+            onChange={({ target: { value } }) => setMessage(value)}
             placeholder="Message..."
             value={message}
-            onChange={({ target: { value } }) => setMessage(value)}
           />
         </div>
         <div
@@ -428,9 +438,9 @@ const CampaignChatBox = ({ campaignAvatar, campaignName, campaignId, userId }) =
           onClick={(event) => sendMessage(event)}
         >
           <div className="icon" />
-            <div className={classes.sendMessageText}>
-              <i className="fas fa-paper-plane" />
-            </div>
+          <div className={classes.sendMessageText}>
+            <i className="fas fa-paper-plane" />
+          </div>
         </div>
       </div>
     </div>

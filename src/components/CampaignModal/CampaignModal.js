@@ -17,7 +17,10 @@ const useStyles = makeStyles(theme => ({
     overflowY : 'scroll',
     width: '800px',
     maxWidth: '80vh',
-    height: '80vh'
+    height: '80vh',
+    '&:focus': {
+      outline: 'none'
+    }
   },
 }));
 

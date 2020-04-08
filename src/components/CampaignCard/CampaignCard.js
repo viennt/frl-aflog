@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 
+let moment = require('moment');
+
 const useStyles = makeStyles(theme => ({
   root: {
     height: theme.spacing(25),
@@ -23,11 +25,13 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: '100%',
     padding: theme.spacing(2),
-    backgroundImage: 'linear-gradient(transparent, transparent, #000000AA)'
+    backgroundImage: 'linear-gradient(transparent, #00000077, #000000AA)'
   },
   brandImage: {
     width: theme.spacing(5),
     height: theme.spacing(5),
+    backgroundColor: '#FFFFFF',
+    borderRadius: 4,
   },
   name: {
     fontSize: '18px',
@@ -35,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1, 0),
   },
   applyBefore: {
-    fontSize: '14px',
+    fontSize: '12px',
   },
 }));
 
@@ -71,7 +75,10 @@ const CampaignCard = ({
             src={brandImage}
           />
           <div className={classes.name}>{name}</div>
-          <div className={classes.applyBefore}>{applyBefore && 'Apply before' + applyBefore.substring(0, 10) + '-'} {slotLeft} slots left</div>
+          <div className={classes.applyBefore}>
+            <i className="far fa-question-circle" /> Apply before {moment(applyBefore).format('DD MMM, YYYY')}{' '}
+            <i className="far fa-question-circle" /> {slotLeft} slots left
+          </div>
         </Grid>
       </div>
     </div>

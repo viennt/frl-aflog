@@ -47,12 +47,12 @@ const CampaignTypeTags = ({ setCampaigns, setType, setPage, clear, selected }) =
         <div
           className={clsx({
             [classes.tags]: true,
-            [classes.active]: selected === 'TYPE_ELIGIBLE'
+            [classes.active]: selected === 'TYPE_ELIGIBILITY'
           })}
           component="p"
           onClick={() => {
             setCampaigns([]);
-            setType('TYPE_ELIGIBLE');
+            setType('TYPE_ELIGIBILITY');
             setPage(1);
             clear();
           }}

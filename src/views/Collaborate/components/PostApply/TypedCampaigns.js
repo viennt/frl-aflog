@@ -39,35 +39,48 @@ const useStyles = makeStyles(theme => ({
   flexMasonryColumn: {
     backgroundClip: 'padding-box'
   },
+  flexMasonryItem: {
+    cursor: 'pointer'
+  },
   loader: {
     textAlign: 'center'
   }
 }));
 
 const TypedCampaigns = ({
-  authToken,
-  error,
-  hasMore,
   isApiLoading,
   appToken,
+  loggedUser,
   setAlert: setAlertDispatcher,
   apiLoading: apiLoadingDispatcher,
   apiSuccess: apiSuccessDispatcher,
   apiError: apiErrorDispatcher
 }) => {
   const classes = useStyles();
-  const [type, setType] = useState('TYPE_ONGOING');
-  const [page, setPage] = useState(1);
+  const [type, setType] = useState('TYPE_ELIGIBILITY');
   const [campaigns, setCampaigns] = useState([]);
   const [campaign, setCampaign] = useState();
-  const [openCampaignModal, setOpenCampaignModal] = useState(false);
+  const [openCampaignModal, setOpenCampaignModal] = useState(true);
+  const [openCampaignChat, setOpenCampaignChat] = useState(false);
 
-  const handleCampaignModalOpen = () => {
-    setOpenCampaignModal(true);
+  const handleCampaignModalOpen = (campaign) => {
+    if (campaign && (type === 'TYPE_ELIGIBILITY' || type === 'TYPE_PENDING')) {
+      setOpenCampaignModal(true);
+    }
   };
 
   const handleCampaignModalClose = () => {
     setOpenCampaignModal(false);
+  };
+
+  const handleCampaignChatOpen = () => {
+    if (campaign && (type === 'TYPE_ONGOING' || type === 'TYPE_FINISHED')) {
+      setOpenCampaignChat(true);
+    }
+  };
+
+  const handleCampaignChatClose = () => {
+    setOpenCampaignChat(false);
   };
 
   const getCampaignByType = async (appToken, type) => {
@@ -96,8 +109,7 @@ const TypedCampaigns = ({
   };
 
   useEffect(() => {
-    // FIXME
-    if (type != 'TYPE_ELIGIBLE' && appToken != undefined) {
+    if (appToken != undefined) {
       getCampaignByType(appToken, type);
     }
   }, [type, appToken]);
@@ -109,7 +121,7 @@ const TypedCampaigns = ({
         clear={() => {}}
         selected={type}
         setCampaigns={setCampaigns}
-        setPage={setPage}
+        setPage={() => {}}
         setType={setType}
       />
       {isApiLoading &&
@@ -128,9 +140,14 @@ const TypedCampaigns = ({
         {
           campaigns.map((campaign, index) => (
             <Grid
+              className={classes.flexMasonryItem}
               item
               key={index}
-              onClick={() => {setCampaign(campaign); handleCampaignModalOpen()}}
+              onClick={() => {
+                setCampaign(campaign);
+                handleCampaignModalOpen(campaign);
+                handleCampaignChatOpen(campaign);
+              }}
             >
               <CampaignCard
                 campaign={{
@@ -145,28 +162,43 @@ const TypedCampaigns = ({
           ))
         }
       </Masonry>
-      <CampaignModal
-        onClose={handleCampaignModalClose}
-        open={openCampaignModal}
-      >
-        {/* {campaign && ( */}
-        <CampainDetail
+      {campaign && (
+        <CampaignModal
+          onClose={handleCampaignModalClose}
+          open={openCampaignModal}
+        >
+          <CampainDetail
+            campaign={{
+              name: campaign.name,
+              brandName: campaign.brand.company_name,
+              backgroundImage: campaign.image,
+              brandImage: campaign.brand.image,
+              applyBefore: campaign.apply_before,
+              slotLeft: campaign.slots_remaining,
+              locationCity: campaign.location_city,
+              industry: campaign.industry,
+              campaignGoal: campaign.campaign_goal,
+              aboutTheBrand: campaign.brand.description,
+              aboutTheCampaign: campaign.description,
+              shootDetail: campaign.product.description,
+              tasks: campaign.deliverables,
+            }}
+          />
+        </CampaignModal>
+      )}
+      {campaign && openCampaignChat && (
+        <CampaignChatBox
           campaign={{
-            name: 'Vien Test',
-            brandName: 'Peach',
-            backgroundImage: 'https://img.freepik.com/free-photo/blurred-tropical-forest-background_23-2147904702.jpg?size=626&ext=jpg',
-            brandImage: 'https://cdn2.f-cdn.com/contestentries/1371237/27733270/5b4b2ef756fc8_thumb900.jpg',
-            applyBefore: 'campaign.apply_before',
-            slotLeft: 4,
-            aboutTheBrand: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-            aboutTheCampaign: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-            shootDetail: 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-            tasks: [],
+            campaignId: campaign.id,
+            campaignName: campaign.name,
+            campaignAvatar: campaign.image,
+          }}
+          onClose={handleCampaignChatClose}
+          user={{
+            userId: loggedUser.id
           }}
         />
-        {/* )} */}
-      </CampaignModal>
-      <CampaignChatBox/>
+      )}
     </div>
   )
 };
@@ -176,7 +208,8 @@ const mapStateToProps = state => ({
   hasMore: state.aflogState.hasMore,
   isApiLoading: state.appState.apiLoading,
   authToken: state.authState.authToken,
-  appToken: state.authState.appToken
+  appToken: state.authState.appToken,
+  loggedUser: state.authState.user
 });
 
 export default connect(
