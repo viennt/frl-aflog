@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
+import io from "socket.io-client";
+import { chatSockerURL } from '../../utils/constants/apiUrl';
 
 const useStyles = makeStyles(theme => ({
   window: {
@@ -190,68 +192,245 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CampaignChatBox = ({ campaignId, userId }) => {
+let socket;
+
+const LeftMessageAction = ({ message, createAt, buttons }) => {
+  const classes = useStyles();
+  return (
+    <li className={classes.messageLeft}>
+      <div className={classes.messageLeftAvatar} />
+      <div className={classes.messageLeftTextWrapper}>
+        <div className={classes.messageLeftText}
+          dangerouslySetInnerHTML={{ __html: message }}
+        >
+        </div>
+        <div className={classes.messageLeftActions}>
+          {buttons.map((item, index) => {
+            return(<div className={classes.messageLeftAction}>{item.text}</div>);
+          })}
+        </div>
+      </div>
+    </li>
+  );
+}
+
+const LeftMessage = ({ message, createAt }) => {
+  const classes = useStyles();
+  return (
+    <li className={classes.messageLeft}>
+      <div className={classes.messageLeftAvatar} />
+      <div className={classes.messageLeftTextWrapper}>
+        <div className={classes.messageLeftText}
+          dangerouslySetInnerHTML={{ __html: message }}
+        >
+        </div>
+      </div>
+    </li>
+  );
+}
+
+const RightMessage = ({ message, createAt }) => {
+  const classes = useStyles();
+  return (
+    <li className={classes.messageRight}>
+      <div className={classes.messageRightTextWrapper}>
+        <div className={classes.messageRightText}
+          dangerouslySetInnerHTML={{ __html: message }}
+        >
+        </div>
+      </div>
+    </li>
+  );
+}
+
+const CampaignChatBox = ({ campaignAvatar, campaignName, campaignId, userId }) => {
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [messages, setMessages] = useState([
+    {
+      type: 'text',
+      message: 'Peach caption with more than 2 lines like this. With hashtags #peach_store #peach #more #hashtags @peach.in',
+      created_at: '1586316637',
+      content_id: 1,
+      revision_number: 1,
+      is_outbox: true,
+      button_data: null,
+      image: null
+    },
+    {
+      type: 'text_with_buttons',
+      message: `Hope you had a good time at the shoot! Please submit your content for review here before posting on Instagram.`,
+      created_at: '1586316637',
+      content_id: 10,
+      revision_number: 1,
+      is_outbox: false,
+      button_data: [
+        {
+          text: 'View Guidelines',
+          type: 'TYPE_GUIDELINES',
+          event_id: 1,
+          on_click: true,
+          data: {
+            type: 'TYPE_WHOLE',
+            content_id: 2
+          }
+        },
+        {
+          text: 'Send content for review',
+          type: 'TYPE_SEND_CONTENT',
+          event_id: 1,
+          on_click: true,
+          data: {
+            type: '‘TYPE_CAPTION’',
+            content_id: 3
+          }
+        }
+      ],
+      image: null
+    },
+    {
+      type: 'text',
+      message: `Hi <strong>Parvathi</strong>,<br/><br/>
+      Congrats on getting selected to be a part of the <strong>Diwali Gifting Campaign</strong> by <strong>Peach</strong>.`,
+      created_at: '1586316637',
+      content_id: 4,
+      revision_number: 1,
+      is_outbox: false,
+      button_data: null,
+      image: null
+    },
+    {
+      type: 'text',
+      message: 'Got it. Thanks!',
+      created_at: '1586316637',
+      content_id: 5,
+      revision_number: 1,
+      is_outbox: true,
+      button_data: null,
+      image: null
+    }
+  ]);
+  const [message, setMessage] = useState('');
   const classes = useStyles();
 
+  const getUnreadMessage = () => {
+    // get unread_count when render
+    socket.emit('unread_count', {user_id: `user_${userId}`, campaign_id: `campaign_${campaignId}`});
+  };
+
+  const getChatHistory = () => {
+    // get chat_history when render
+    socket.emit('chat_history', {user_id: `user_${userId}`, campaign_id: `campaign_${campaignId}`});
+  };
+
+  const sendMessage = (event) => {
+    event.preventDefault();
+
+    if(message) {
+      // send message to campaign
+      socket.emit('message_relay', {
+        recipient_id: `campaign_${campaignId}`,
+        type: 'text',
+        message: message,
+        created_at: Math.floor(Date.now() / 1000),
+        is_outbox: true,
+        button_data: null,
+        images: null
+      });
+      getChatHistory();
+      setMessage('');
+    }
+  }
+
+  const setMessageToRead = (messageId) => {
+    // set unread message to read
+    socket.emit('set_read_message', {id: messageId});
+  }
+
+  useEffect(() => {
+    socket = io(chatSockerURL);
+
+    socket.on('connect', () => {
+      console.log('connect ok rồi !!!!');
+    });
+
+    getUnreadMessage();
+    getChatHistory();
+    setMessageToRead();
+  }, [chatSockerURL]);
+
+  useEffect(() => {
+    // listen to get unread_count
+    socket.on(`unread_count_user_${userId}_campaign_${campaignId}`, data => {
+      console.log('unread_count: ', data);
+      setUnreadCount(data.unread_count);
+    });
+
+    // listen to new chat_history
+    socket.on(`chat_history_user_${userId}_campaign_${campaignId}`, data => {
+      console.log('List chat history', data);
+      setMessages(data);
+    });
+
+  }, []);
   return (
     <div className={classes.window}>
       <div className={classes.header}>
         <div className={classes.headerAvatar} />
-        <div className={classes.headerTitle}>Campaign Name by Brand Name</div>
+        <div className={classes.headerTitle}>{campaignName}</div>
         <div className={classes.headerButtons}>
           <div>_</div>
           <div>X</div>
         </div>
       </div>
       <ul className={classes.messages}>
-        <li className={classes.messageRight}>
-          <div className={classes.messageRightTextWrapper}>
-            <div className={classes.messageRightText}>
-              Peach caption with more than 2 lines like this. With hashtags #peach_store #peach #more #hashtags @peach.in
-            </div>
-          </div>
-        </li>
-        <li className={classes.messageLeft}>
-          <div className={classes.messageLeftAvatar} />
-          <div className={classes.messageLeftTextWrapper}>
-            <div className={classes.messageLeftText}>
-              Hope you had a good time at the shoot! Please submit your content for review here before posting on Instagram.
-            </div>
-            <div className={classes.messageLeftActions}>
-              <div className={classes.messageLeftAction}>View Guidelines</div>
-              <div className={classes.messageLeftActio}>Send content for review</div>
-            </div>
-          </div>
-        </li>
-        <li className={classes.messageLeft}>
-          <div className={classes.messageLeftAvatar} />
-          <div className={classes.messageLeftTextWrapper}>
-            <div className={classes.messageLeftText}>
-              Hi <strong>Parvathi</strong>,<br/><br/>
-              Congrats on getting selected to be a part of the <strong>Diwali Gifting Campaign</strong> by <strong>Peach</strong>.
-            </div>
-          </div>
-        </li>
-        <li className={classes.messageRight}>
-          <div className={classes.messageRightTextWrapper}>
-            <div className={classes.messageRightText}>
-              Peach caption with more than 2 lines like this. With hashtags #peach_store #peach #more #hashtags @peach.in
-            </div>
-          </div>
-        </li>
+        {messages.map((item, index) => {
+          if (item.type == 'text' && item.is_outbox) {
+            return (
+              <RightMessage
+                message={item.message}
+                createAt={item.created_at}
+              />
+            )
+          }
+          if (!item.is_outbox) {
+            if (item.type == 'text') {
+              return (
+                <LeftMessage
+                  message={item.message}
+                  createAt={item.created_at}
+                />
+              )
+            }
+            if (item.type == 'text_with_buttons') {
+              return (
+                <LeftMessageAction
+                  message={item.message}
+                  createAt={item.created_at}
+                  buttons={item.button_data}
+                />
+              )
+            }
+            
+          }
+        })}
       </ul>
       <div className={classes.bottomWrapper}>
         <div className={classes.inputWrapper}>
           <input
             className={classes.input}
             placeholder="Message..."
+            value={message}
+            onChange={({ target: { value } }) => setMessage(value)}
           />
         </div>
-        <div className={classes.sendMessage}>
+        <div
+          className={classes.sendMessage}
+          onClick={(event) => sendMessage(event)}
+        >
           <div className="icon" />
-          <div className={classes.sendMessageText}>
-            <i className="fas fa-paper-plane" />
-          </div>
+            <div className={classes.sendMessageText}>
+              <i className="fas fa-paper-plane" />
+            </div>
         </div>
       </div>
     </div>
