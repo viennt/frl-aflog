@@ -57,7 +57,7 @@ const TypedCampaigns = ({
   apiError: apiErrorDispatcher
 }) => {
   const classes = useStyles();
-  const [type, setType] = useState('TYPE_ELIGIBILITY');
+  const [type, setType] = useState('TYPE_ONGOING');
   const [campaigns, setCampaigns] = useState([]);
   const [campaign, setCampaign] = useState();
   const [openCampaignModal, setOpenCampaignModal] = useState(true);

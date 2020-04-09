@@ -1,8 +1,10 @@
-import React, { useEffect, useState, Fragment } from 'react';
-import { makeStyles } from '@material-ui/styles';
-import clsx from 'clsx';
+import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import { makeStyles } from '@material-ui/styles';
+
 import { chatSockerURL } from '../../utils/constants/apiUrl';
+
+let moment = require('moment');
 
 const useStyles = makeStyles(theme => ({
   window: {
@@ -247,112 +249,54 @@ const RightMessage = ({ message, createAt }) => {
 
 const CampaignChatBox = ({
   campaign: {
-    campaignAvatar, campaignName, campaignId
+    campaignAvatar,
+    campaignName,
+    campaignId
   },
-  user: {
-    userId
-  },
+  user,
   onClose
 }) => {
+  const userId = 11;
   const [unreadCount, setUnreadCount] = useState(0);
-  const [messages, setMessages] = useState([
-    {
-      type: 'text',
-      message: 'Peach caption with more than 2 lines like this. With hashtags #peach_store #peach #more #hashtags @peach.in',
-      created_at: '1586316637',
-      content_id: 1,
-      revision_number: 1,
-      is_outbox: true,
-      button_data: null,
-      image: null
-    },
-    {
-      type: 'text_with_buttons',
-      message: 'Hope you had a good time at the shoot! Please submit your content for review here before posting on Instagram.',
-      created_at: '1586316637',
-      content_id: 10,
-      revision_number: 1,
-      is_outbox: false,
-      button_data: [
-        {
-          text: 'View Guidelines',
-          type: 'TYPE_GUIDELINES',
-          event_id: 1,
-          on_click: true,
-          data: {
-            type: 'TYPE_WHOLE',
-            content_id: 2
-          }
-        },
-        {
-          text: 'Send content for review',
-          type: 'TYPE_SEND_CONTENT',
-          event_id: 1,
-          on_click: true,
-          data: {
-            type: '‘TYPE_CAPTION’',
-            content_id: 3
-          }
-        }
-      ],
-      image: null
-    },
-    {
-      type: 'text',
-      message: `Hi <strong>Parvathi</strong>,<br/><br/>
-      Congrats on getting selected to be a part of the <strong>Diwali Gifting Campaign</strong> by <strong>Peach</strong>.`,
-      created_at: '1586316637',
-      content_id: 4,
-      revision_number: 1,
-      is_outbox: false,
-      button_data: null,
-      image: null
-    },
-    {
-      type: 'text',
-      message: 'Got it. Thanks!',
-      created_at: '1586316637',
-      content_id: 5,
-      revision_number: 1,
-      is_outbox: true,
-      button_data: null,
-      image: null
-    }
-  ]);
+  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const classes = useStyles();
 
+  const onNewMessages = (msgs) => {
+    setMessages([...messages, ...msgs])
+  }
+
   const getUnreadMessage = () => {
-    // get unread_count when render
     socket.emit('unread_count', {user_id: `user_${userId}`, campaign_id: `campaign_${campaignId}`});
   };
 
   const getChatHistory = () => {
-    // get chat_history when render
-    socket.emit('chat_history', {user_id: `user_${userId}`, campaign_id: `campaign_${campaignId}`});
+    socket.emit('chat_history', {user_id: `user_${userId}`, from_id: `user_${userId}`, campaign_id: `campaign_${campaignId}`});
   };
 
   const sendMessage = (event) => {
     event.preventDefault();
 
-    if(message) {
-      // send message to campaign
-      socket.emit('message_relay', {
-        recipient_id: `campaign_${campaignId}`,
+    if (message) {
+      const payload = {
+        from_id: `user_${userId}`,
+        to_id: `campaign_${campaignId}`,
         type: 'text',
         message: message,
-        created_at: Math.floor(Date.now() / 1000),
+        created_at: moment().format('YYYY-MM-DD HH:MM:ss'),
         is_outbox: true,
-        button_data: null,
-        images: null
-      });
-      getChatHistory();
+        button_data: [],
+        images: [],
+        content_id: -1,
+        revision_number: -1
+      };
+      socket.emit('message_relay', payload);
+      // getChatHistory();
       setMessage('');
     }
   }
 
   const setMessageToRead = (messageId) => {
-    // set unread message to read
     socket.emit('set_read_message', {id: messageId});
   }
 
@@ -361,27 +305,33 @@ const CampaignChatBox = ({
 
     socket.on('connect', () => {
       console.log('connect ok rồi !!!!');
-    });
 
-    getUnreadMessage();
-    getChatHistory();
-    setMessageToRead();
+      socket.on(`unread_count_user_${userId}_campaign_${campaignId}`, data => {
+        setUnreadCount(data.unread_count);
+      });
+
+      socket.on(`chat_history_user_${userId}_campaign_${campaignId}`, msgs => {
+        onNewMessages(msgs);
+      });
+
+      socket.on(`message_user_${userId}_campaign_${campaignId}`, msg => {
+        onNewMessages([{...msg, is_outbox: 'false'}]);
+      });
+
+      socket.on(`message_campaign_${campaignId}_user_${userId}`, msg => {
+        onNewMessages([{...msg, is_outbox: 'true'}]);
+      });
+
+      getUnreadMessage();
+      getChatHistory();
+
+      socket.on('disconnect', () => {
+        onClose();
+      });
+    });
+    // setMessageToRead();
   }, [chatSockerURL]);
 
-  useEffect(() => {
-    // listen to get unread_count
-    socket.on(`unread_count_user_${userId}_campaign_${campaignId}`, data => {
-      console.log('unread_count: ', data);
-      setUnreadCount(data.unread_count);
-    });
-
-    // listen to new chat_history
-    socket.on(`chat_history_user_${userId}_campaign_${campaignId}`, data => {
-      console.log('List chat history', data);
-      setMessages(data);
-    });
-
-  }, []);
   return (
     <div className={classes.window}>
       <div className={classes.header}>
@@ -394,19 +344,21 @@ const CampaignChatBox = ({
       </div>
       <ul className={classes.messages}>
         {messages.map((item, index) => {
-          if (item.type == 'text' && item.is_outbox) {
+          if (item.type == 'text' && item.is_outbox === 'true') {
             return (
               <RightMessage
                 createAt={item.created_at}
+                key={item.id}
                 message={item.message}
               />
             )
           }
-          if (!item.is_outbox) {
+          if (item.is_outbox === 'false') {
             if (item.type == 'text') {
               return (
                 <LeftMessage
                   createAt={item.created_at}
+                  key={item.id}
                   message={item.message}
                 />
               )
@@ -416,11 +368,11 @@ const CampaignChatBox = ({
                 <LeftMessageAction
                   buttons={item.button_data}
                   createAt={item.created_at}
+                  key={item.id}
                   message={item.message}
                 />
               )
             }
-
           }
         })}
       </ul>
@@ -429,6 +381,7 @@ const CampaignChatBox = ({
           <input
             className={classes.input}
             onChange={({ target: { value } }) => setMessage(value)}
+            onKeyDown={(event) => {if (event.keyCode == 13) {sendMessage(event)}}}
             placeholder="Message..."
             value={message}
           />
