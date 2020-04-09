@@ -9,6 +9,12 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ConfirmModal from './ConfirmModal';
+import { apiLoading, apiSuccess, apiError } from '../../redux/actions/app';
+import { setAlert } from '../../redux/actions/alert';
+import { rootURL } from '../../utils/constants/apiUrl';
+import axios from 'axios';
+import { connect } from 'react-redux';
 
 let moment = require('moment');
 
@@ -101,8 +107,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function AflogDetail({
+const CampaignDetail = ({
   campaign: {
+    id,
     name,
     backgroundImage,
     brandImage,
@@ -115,18 +122,68 @@ export default function AflogDetail({
     aboutTheBrand,
     aboutTheCampaign,
     shootDetail,
-    tasks,
+    tasks
   },
-}) {
+  isApiLoading,
+  appToken,
+  setAlert: setAlertDispatcher,
+  apiLoading: apiLoadingDispatcher,
+  apiSuccess: apiSuccessDispatcher,
+  apiError: apiErrorDispatcher
+}) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState('ABOUT_BRAND');
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   const handleExpandedChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  const handleOpenConfirmModel = () => {
+    setOpenConfirmModal(true);
+  };
+
+  const handleCloseConfirmModel = () => {
+    setOpenConfirmModal(false);
+  };
+
+  const handleConfirmModal = (appToken, campaignId) => (event) => {
+    applyCampaign(appToken, campaignId);
+    setOpenConfirmModal(false);
+  };
+
+  const applyCampaign = async (appToken, campaignId) => {
+    try {
+      apiLoadingDispatcher();
+      const res = await
+      axios.post(`${rootURL}/collaborate-app/campaign/apply`,
+        {
+          campaign_id: campaignId
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${appToken}`
+          }
+        }
+      );
+      if (res.data) {
+        // FIXME update apply campaign flag
+        apiSuccessDispatcher();
+      }
+
+    } catch (err) {
+      setAlertDispatcher(err.message, 'danger');
+      apiErrorDispatcher();
+    }
+  };
+
   return (
     <div className={classes.root}>
+      <ConfirmModal
+        open={openConfirmModal}
+        onClose={handleCloseConfirmModel}
+        handleConfirmButton={handleConfirmModal(appToken, id)}
+      />
       <Card className={classes.campaign}>
         <img
           alt={backgroundImage}
@@ -238,8 +295,28 @@ export default function AflogDetail({
         </CardContent> */}
 
 
-        <button className={classes.applyButton}>Apply</button>
+        <button
+          className={classes.applyButton}
+          onClick={handleOpenConfirmModel}
+        >Apply</button>
       </Card>
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  error: state.aflogState.error,
+  hasMore: state.aflogState.hasMore,
+  isApiLoading: state.appState.apiLoading,
+  appToken: state.authState.appToken,
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    apiLoading,
+    apiSuccess,
+    apiError,
+    setAlert
+  }
+)(CampaignDetail);

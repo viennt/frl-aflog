@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 
@@ -21,7 +21,14 @@ const useStyles = makeStyles(theme => ({
 
 const Collaborate = ({ requestToken }) => {
   const classes = useStyles();
-  const appliedCollaborate = !!requestToken;
+  const [appliedCollaborate, setAppliedCollaborate] = useState(false);
+
+  useEffect(() => {
+    if (requestToken) {
+      setAppliedCollaborate(true);
+    }
+  }, [requestToken]);
+
 
   return (
     <div className={classes.root}>

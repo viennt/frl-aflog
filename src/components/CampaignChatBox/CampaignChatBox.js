@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { makeStyles } from '@material-ui/styles';
+import { connect } from 'react-redux';
 
 import { chatSockerURL } from '../../utils/constants/apiUrl';
 
@@ -254,9 +255,10 @@ const CampaignChatBox = ({
     campaignId
   },
   user,
-  onClose
+  onClose,
+  userId
 }) => {
-  const userId = 11;
+  // const userId = 11;
   const [unreadCount, setUnreadCount] = useState(0);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -400,4 +402,11 @@ const CampaignChatBox = ({
   );
 };
 
-export default CampaignChatBox
+const mapStateToProps = state => ({
+  userId: state.authState.newUserId
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(CampaignChatBox);

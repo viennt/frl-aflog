@@ -11,8 +11,28 @@ import {
 } from './index';
 import { setAlert } from './alert';
 
-export const applyCollaborate = (requestToken) => dispatch => {
+export const applyCollaborate = (requestToken, authToken) => async dispatch => {
   localStorage.setItem('request_token', requestToken);
+  const appRes = await axios.post(`${rootURL}/collaborate/apply-check`,
+    {
+      request_token: 34309
+      // FIXME
+      // request_token: requestToken
+    },
+    {
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      }
+    }
+  );
+  if (appRes.data.auth_token) {
+    localStorage.setItem('app_token', appRes.data.auth_token);
+    localStorage.setItem('new_user_id', appRes.data.user_id);
+    dispatch({
+      type: APPLY_CHECK_SUCCESS,
+      payload: appRes.data
+    });
+  }
   dispatch({
     type: APPLY_COLLABORATE_SUCCESS,
     payload: requestToken
@@ -51,9 +71,10 @@ export const login = (username, password) => async dispatch => {
         );
         if (appRes.data.auth_token) {
           localStorage.setItem('app_token', appRes.data.auth_token);
+          localStorage.setItem('new_user_id', appRes.data.user_id);
           dispatch({
             type: APPLY_CHECK_SUCCESS,
-            payload: appRes.data.auth_token
+            payload: appRes.data
           });
         }
       }
@@ -82,6 +103,7 @@ export const logout = (token) => async dispatch => {
       localStorage.removeItem('user');
       localStorage.removeItem('request_token');
       localStorage.removeItem('app_token');
+      localStorage.removeItem('new_user_id');
       dispatch({ type: LOGOUT });
       dispatch(apiSuccess());
       history.push('/Home');

@@ -169,6 +169,7 @@ const TypedCampaigns = ({
         >
           <CampainDetail
             campaign={{
+              id: campaign.id,
               name: campaign.name,
               brandName: campaign.brand.company_name,
               backgroundImage: campaign.image,

@@ -233,7 +233,7 @@ const ApplyCollaborate = ({
         }
       );
       if (res.data) {
-        applyCollaborateDispatcher(res.data.request_token);
+        applyCollaborateDispatcher(res.data.request_token, authToken);
         apiSuccessDispatcher();
       }
 
