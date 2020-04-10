@@ -4,7 +4,11 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import validate from 'validate.js';
 import { connect } from 'react-redux';
-import { login } from '../../../redux/actions/auth';
+import { login, loginSocial } from '../../../redux/actions/auth';
+import { setAlert } from '../../../redux/actions/alert';
+import SocialButton from './SocialButton';
+import { facebookAppId, googleAppId } from '../../../utils/constants/apiUrl';
+import { Alert } from '../../../components';
 
 const schema = {
   email: {
@@ -24,7 +28,9 @@ const schema = {
 const LoginModal = ({
   open,
   onClose,
-  login: loginDispatcher
+  login: loginDispatcher,
+  loginSocial: loginSocialDispatcher,
+  setAlert: setAlertDispatcher
 }) => {
   const classes = useStyles();
 
@@ -70,6 +76,14 @@ const LoginModal = ({
     onClose(true);
   }
 
+  const handleSocialLogin = (user) => {
+    loginSocialDispatcher(user.provider, user.token.accessToken);
+  }
+  
+  const handleSocialLoginFailure = (err) => {
+    setAlertDispatcher(err, 'danger');
+  }
+
   return (
     <Modal
       aria-describedby="simple-modal-description"
@@ -81,14 +95,27 @@ const LoginModal = ({
       <div className={classes.roots}>
         <div className={classes.header}>Be a part of Collaborate!</div>
         <div className={classes.signUp}>New user? Create an Account</div>
-        <button className={classes.google}>
-          <i className="fab fa-google" />{' '}
+        <Alert />
+        <SocialButton
+          provider='google'
+          appId={googleAppId}
+          onLoginSuccess={handleSocialLogin}
+          onLoginFailure={handleSocialLoginFailure}
+          className={classes.google}
+        >
+           <i className="fab fa-google" />{' '}
           <span>Continue with Google</span>
-        </button>
-        <button className={classes.facebook}>
+        </SocialButton>
+        <SocialButton
+          provider='facebook'
+          appId={facebookAppId}
+          onLoginSuccess={handleSocialLogin}
+          onLoginFailure={handleSocialLoginFailure}
+          className={classes.facebook}
+        >
           <i className="fab fa-facebook" />{' '}
           <span>Continue with Facebook</span>
-        </button>
+        </SocialButton>
         <div className={classes.or}>or</div>
         <form
           onSubmit={handleSubmit}
@@ -225,4 +252,4 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default connect(null, { login })(LoginModal);
+export default connect(null, { login, loginSocial, setAlert })(LoginModal);

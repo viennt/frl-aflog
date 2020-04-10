@@ -113,3 +113,51 @@ export const logout = (token) => async dispatch => {
     dispatch(apiError());
   }
 }
+
+export const loginSocial = (type, token) => async dispatch => {
+  try {
+    dispatch(apiLoading());
+    const res = await axios.post(`${rootURL}/login`,
+      {
+        type: type,
+        token: token
+      }
+    );
+    if (res.data) {
+      localStorage.setItem('auth_token', res.data.auth_token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      localStorage.setItem('request_token', res.data.request_token);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data
+      });
+      if (res.data.request_token) {
+        const appRes = await axios.post(`${rootURL}/collaborate/apply-check`,
+          {
+            request_token: 34309
+            // FIXME
+            // request_token: res.data.request_token
+          },
+          {
+            headers: {
+              'Authorization': `Bearer ${res.data.auth_token}`
+            }
+          }
+        );
+        if (appRes.data.auth_token) {
+          localStorage.setItem('app_token', appRes.data.auth_token);
+          localStorage.setItem('new_user_id', appRes.data.user_id);
+          dispatch({
+            type: APPLY_CHECK_SUCCESS,
+            payload: appRes.data
+          });
+        }
+      }
+      dispatch(apiSuccess());
+    }
+  } catch (err) {
+    dispatch({ type: LOGIN_FAILURE })
+    dispatch(setAlert(err.message, 'danger'));
+    dispatch(apiError());
+  }
+}
