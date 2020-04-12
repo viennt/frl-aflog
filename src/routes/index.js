@@ -10,6 +10,7 @@ import {
   Collaborate as CollaborateView,
 
   Profile as ProfileView,
+  ProfileSetting as ProfileSettingView,
 
   About as AboutView,
   Contact as ContactView,
@@ -49,6 +50,13 @@ const Routes = () => {
           exact
           layout={MinimalLayout}
           path="/Profile"
+        />
+
+        <RouteWithLayout
+          component={ProfileSettingView}
+          exact
+          layout={MinimalLayout}
+          path="/Profile/Setting"
         />
 
         <RouteWithLayout
