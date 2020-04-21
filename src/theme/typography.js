@@ -1,7 +1,7 @@
 import palette from './palette';
 
 export default {
-  fontFamily: "Muli, sans-serif !important" ,
+  fontFamily: 'Muli, sans-serif !important' ,
   fontSize: 14,
   fontWeight: 'normal',
   fontStretch: 'normal',
@@ -53,7 +53,7 @@ export default {
     fontSize: 18,
     fontWeight: 600,
     lineHeight: '24px'
-  },  
+  },
   h5: {
     color: palette.black,
     fontWeight: 400,

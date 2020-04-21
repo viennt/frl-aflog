@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 import palette from './palette';
 import typography from './typography';
@@ -15,9 +15,9 @@ const theme = createMuiTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontSize: "12px",
-        color: "#000",
-        backgroundColor: "#fff",
+        fontSize: '12px',
+        color: '#000',
+        backgroundColor: '#fff',
         boxShadow:' 1px 1px 8px 2px #ccc'
       }
     }

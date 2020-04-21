@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
@@ -7,7 +8,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Avatar from '@material-ui/core/Avatar';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
+import LoginModal from './LoginModal';
 
 const useStyles = makeStyles(theme => ({
   aflog_navbar: {
@@ -26,11 +29,11 @@ const useStyles = makeStyles(theme => ({
     },
   },
   appbar_custom:{
-    backgroundColor: theme.palette.black
+    backgroundColor: theme.palette.common.black
   },
   link:{
     textDecoration : 'none',
-    color: theme.palette.white,
+    color: theme.palette.common.white,
     padding : '0 15px',
     fontSize : '13px',
     fontFamily: 'Muli, sans-serif'
@@ -42,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   mobilelink:{
     fontFamily: 'Muli, sans-serif',
     textDecoration : 'none',
-    color: theme.palette.black,
+    color: theme.palette.common.black,
     padding : '0 15px',
     fontSize : '13px'
   },
@@ -58,13 +61,27 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
+  avatar: {
+    margin: `-${theme.spacing(1)}px`,
+    width: `${theme.spacing(4)}px !important`,
+    height: `${theme.spacing(4)}px !important`,
+  },
 }));
 
-const Topbar = ({location})=> {
+const Topbar = ({userInfo, loggedIn})=> {
   const classes = useStyles();
 
+  const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleLoginModalOpen = () => {
+    setOpenLoginModal(true);
+  };
+
+  const handleLoginModalClose = () => {
+    setOpenLoginModal(false);
+  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -121,6 +138,13 @@ const Topbar = ({location})=> {
         </RouterLink>
       </MenuItem>
     </Menu>
+  );
+
+  const renderLoginModal = (
+    <LoginModal
+      onClose={handleLoginModalClose}
+      open={openLoginModal}
+    />
   );
 
   return (
@@ -185,6 +209,13 @@ const Topbar = ({location})=> {
             <NavLink
               activeClassName={classes.linkActive}
               className={classes.link}
+              to="/Collaborate"
+            >
+              Collaborate
+            </NavLink>
+            <NavLink
+              activeClassName={classes.linkActive}
+              className={classes.link}
               to="/About-us"
             >
               About
@@ -207,6 +238,37 @@ const Topbar = ({location})=> {
             >
               Community
             </NavLink>
+            {
+              loggedIn ? (
+                <>
+                  <NavLink
+                    activeClassName={classes.linkActive}
+                    className={classes.link}
+                  >
+                    <i className="fas fa-bell" />
+                  </NavLink>
+                  <NavLink
+                    activeClassName={classes.linkActive}
+                    className={classes.link}
+                    to="/Profile"
+                  >
+                    <Avatar
+                      alt={userInfo.name}
+                      className={classes.avatar}
+                      src={userInfo.image}
+                    />
+                  </NavLink>
+                </>
+              ) : (
+                <NavLink
+                  activeClassName={classes.linkActive}
+                  className={classes.link}
+                  onClick={handleLoginModalOpen}
+                >
+                  Sign in
+                </NavLink>
+              )
+            }
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -222,8 +284,14 @@ const Topbar = ({location})=> {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
+      {renderLoginModal}
     </div>
   );
 }
 
-export default withRouter(Topbar);
+const mapStateToProps = state => ({
+  userInfo: state.authState.user,
+  loggedIn: state.authState.loggedIn,
+});
+
+export default connect(mapStateToProps)(withRouter(Topbar));

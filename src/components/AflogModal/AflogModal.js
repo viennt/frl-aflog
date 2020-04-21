@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -18,7 +18,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'transparent',
     overflowY : 'scroll',
     width: '800px',
-    height: '90vh'
+    maxWidth: '80vh',
+    height: '80vh'
   },
 
 }));
@@ -31,20 +32,19 @@ export default function AflogModal({
 }) {
   const classes = useStyles();
 
-
   return (
     <div>
       <Modal
-        aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
+        aria-labelledby="transition-modal-title"
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
+        className={classes.modal}
+        closeAfterTransition
+        onClose={handleClose}
+        open={open}
       >
         <Fade in={open}>
           <div className={classes.paper}>
